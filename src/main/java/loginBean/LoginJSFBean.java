@@ -1,16 +1,13 @@
 package loginBean;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import org.primefaces.PrimeFaces;
-
-@Named(value="loginView")
+@Named(value="loginBean")
 @RequestScoped
-public class LoginView {
+public class LoginJSFBean {
 
 	private String username;
     
@@ -18,18 +15,15 @@ public class LoginView {
    
     public void login() {
         FacesMessage message = null;
-        boolean loggedIn = false;
          
         if(username != null && username.equals("admin") && password != null && password.equals("admin")) {
-            loggedIn = true;
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
-        } else {
-            loggedIn = false;
+        } 
+        else {
             message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
         }
          
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        PrimeFaces.current().ajax().addCallbackParam("loggedIn", loggedIn);
+        FacesContext.getCurrentInstance().addMessage("loginForm:signIn", message);
     }   
     
     public String getUsername() {
