@@ -1,20 +1,12 @@
 package entity;
 
-public class User {
+public class User extends BaseEntity {
 
-	private int id;
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
-	private int createdBy;
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getUsername() {
 		return username;
 	}
@@ -38,11 +30,5 @@ public class User {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-	public int getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
 	}
 }

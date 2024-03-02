@@ -1,4 +1,4 @@
-package loginBean;
+package beans.login;
 
 import service.UserService;
 import entity.User;
@@ -11,11 +11,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import org.mindrot.jbcrypt.BCrypt;
+//import org.mindrot.jbcrypt.BCrypt;
 
 @Named(value="loginBean")
 @RequestScoped
-public class LoginJSFBean {
+public class LoginBean {
 
 	private String username;
     
@@ -25,10 +25,9 @@ public class LoginJSFBean {
         FacesMessage message = null;
         UserService userService = new UserService();
         try {
-            userService.setConnection(Config.getDBUrl());
-            if(username != null) {
-                User user = userService.getUserByUsername(username);
-                if(user != null && BCrypt.checkpw(password, user.getPassword())) {
+            //userService.setConnection(Config.getDBUrl());
+            if(username != null && password != null) {
+                if(userService.authenticateUser(username, password)) {
                     message = new FacesMessage("Welcome " + username);
                 }else {
                     message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Your username or password are invalid");
@@ -44,7 +43,7 @@ public class LoginJSFBean {
 	        //}
 
 	        FacesContext.getCurrentInstance().addMessage("loginForm:signIn", message);
-        } catch (SQLException e) {
+        } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
