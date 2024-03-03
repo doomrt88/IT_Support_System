@@ -1,0 +1,10 @@
+@charset "ISO-8859-1";
+
+.nav-pills .nav-link.active, .nav-pills .navbar-dark, .bg-dark {
+	background-color: #416285 !important;
+	color: #fff !important
+}
+
+.nav-pills .nav-link{
+	color: #416285 !important;
+}

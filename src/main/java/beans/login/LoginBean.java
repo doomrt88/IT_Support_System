@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -29,6 +30,9 @@ public class LoginBean {
             if(username != null && password != null) {
                 if(userService.authenticateUser(username, password)) {
                     message = new FacesMessage("Welcome " + username);
+                    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                    externalContext.redirect(externalContext.getRequestContextPath() + "/Home.xhtml");
+                    
                 }else {
                     message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Your username or password are invalid");
                 }
