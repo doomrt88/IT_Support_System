@@ -5,21 +5,26 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import manager.LoginManager;
+
 @Named(value="loginBean")
 @RequestScoped
-public class LoginJSFBean {
-
+public class LoginJSFBean 
+{
 	private String username;
-    
     private String password;
    
-    public void login() {
+    public void login() 
+    {
         FacesMessage message = null;
+        boolean isValidLogin = LoginManager.validateLogin(getUsername(), getPassword());
          
-        if(username != null && username.equals("admin") && password != null && password.equals("admin")) {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
+        if(isValidLogin) 
+        {
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", "Welcome "+getUsername());
         } 
-        else {
+        else 
+        {
             message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
         }
          
