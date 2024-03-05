@@ -8,3 +8,23 @@
 .nav-pills .nav-link{
 	color: #416285 !important;
 }
+
+.border-primary {
+	border-color: #416285 !important;
+}
+
+.btn-primary {
+	background-color: #416285 !important;
+	color: #fff !important;
+	border-color: #416285 !important;
+}
+
+.btn-outline-primary {
+    color: #416285 !important;
+    border-color: #416285 !important;
+}
+
+.btn-outline-primary:hover{
+	background-color: #416285;
+	color: #fff !important;
+}

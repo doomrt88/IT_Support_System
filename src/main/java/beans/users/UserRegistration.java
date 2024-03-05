@@ -8,6 +8,7 @@ import javax.inject.Named;
 import models.dto.BaseResponse;
 import models.dto.RegistrationFormDTO;
 import service.UserService;
+import utility.Config;
 
 @Named("userRegistrationBean")
 @RequestScoped
@@ -28,7 +29,7 @@ public class UserRegistration {
             return;
         }
 
-        boolean success = userService.registerUser(registrationForm.getUsername(), registrationForm.getPassword(), registrationForm.getFirstName(), registrationForm.getLastName());
+        boolean success = userService.registerUser(registrationForm.getUsername(), registrationForm.getPassword(), registrationForm.getFirstName(), registrationForm.getLastName(), Config.getDefaultRoleId());
         if (success) {
         	response.setResult(success);
             response.setMessage("Registration successful! Welcome, " + registrationForm.getFirstName() + " " + registrationForm.getLastName() + "!");
@@ -68,7 +69,7 @@ public class UserRegistration {
             errMsg = message.getDetail();
         }
     	
-    	if (!registrationForm.getPassword().equals(registrationForm.getConfirmPassword())) {
+    	if (registrationForm.getPassword() == null || !registrationForm.getPassword().equals(registrationForm.getConfirmPassword())) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password mismatch", "The passwords do not match.");
             FacesContext.getCurrentInstance().addMessage("registrationForm:confirmPassword", message);
             errMsg = message.getDetail();

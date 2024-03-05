@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class RegistrationFormDTO implements Serializable {
-    private String username;
-    private String password;
-    private String confirmPassword;
-    private String firstName;
-    private String lastName;
+    protected String username;
+    protected String password;
+    protected String confirmPassword;
+    protected String firstName;
+    protected String lastName;
 
     // 
     public RegistrationFormDTO() {

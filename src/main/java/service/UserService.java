@@ -103,10 +103,11 @@ public class UserService {
 	public boolean authenticateUser(String username, String password) {
         DbContext dbContextPool = DbContext.getInstance();
         String sql = "SELECT password FROM users WHERE user_name = ?";
+        Connection connection = null; 
         
-        try (Connection connection = dbContextPool.getConnection();
-        	     PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
+        try {
+        		connection = dbContextPool.getConnection();
+        		PreparedStatement preparedStatement = connection.prepareStatement(sql);
         	    preparedStatement.setString(1, username);
         	    try (ResultSet resultSet = preparedStatement.executeQuery()) {
         	        
@@ -120,10 +121,14 @@ public class UserService {
         	} catch (SQLException e) {
         	    e.printStackTrace();
         	    return false;
-        	}
+        	} finally {
+                if (connection != null) {
+                    DbContext.getInstance().releaseConnection(connection);
+                }
+            }
     }
 	
-	public boolean registerUser(String username, String password, String firstName, String lastName) {
+	public boolean registerUser(String username, String password, String firstName, String lastName, int roleId) {
         String hashedPassword = hashPassword(password);
 
         User user = new User();
@@ -145,7 +150,7 @@ public class UserService {
 
             int userId = userRepository.insert(user, connection);
             if (userId != -1) {
-                if (userRepository.insertUserRole(userId, Config.getDefaultRoleId(), connection)) {
+                if (userRepository.insertUserRole(userId, roleId, connection)) {
                     connection.commit();
                     return true;
                 }

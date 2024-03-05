@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+                
+
+    
+    <div class="container">
+        <h2>User Management</h2>
+		<button type="button" class="btn btn-outline-primary btn-sm mb-3"  onclick="loadUserForm();"><i class="fas fa-plus"></i> Create</button>
+        <div id="userListForm">
+            <ui:include src="/Users/UserList.xhtml" />
+        </div>
+        
+        
+        <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="createUserModalTitle">Create User</h5>
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">x</span>
+	                    </button>
+	                </div>
+<!-- 	                <div class="modal-body" id="userFormContainer"> -->
+                        
+<!--                     </div> -->
+	                <div class="modal-body">
+	                    <ui:include src="/Users/UserForm.xhtml" />
+	                </div>
+						                
+	            </div>
+	        </div>
+	    </div>
+    </div>
+	<script>
+		
+    
+        function loadUserForm() {
+            $('#createUserModal').modal('show');
+            // AJAX call to load the User Form content dynamically
+//             $.ajax({
+//                 url: "/Users/UserForm.xhtml",
+//                 method: "GET",
+//                 success: function(data) {
+//                     $("#userFormContainer").html(data); // Inject the loaded content into the modal body
+//                 },
+//                 error: function(xhr, status, error) {
+//                     console.error("Error loading User Form:", error);
+//                 }
+//             });
+        }
+    </script>
+<!-- 	<script> -->
+
+	
+<!--      function openCreateUserModal() { -->
+<!--      	//openGenericModal('Add User', '/Users/UserForm.xhtml', onSave); -->
+<!--      	openGenericModal( -->
+<!--      	        'Add User',  -->
+<!--      	        '/Users/UserForm.xhtml', -->
+<!--      	        function(onSaveCallback) { -->
+<!--          	        console.log("#{userAdministrationBean.register()}"); -->
+<!--      	            $.ajax({ -->
+<!--      	                type: 'POST', -->
+<!--      	                url: "#{userAdministrationBean.register()}", -->
+<!--      	                data: $('#userForm').serialize(), -->
+<!--      	                success: function(response) { -->
+<!--  	    	                console.log(response); -->
+<!--      	                    // Invoke the callback with true indicating success -->
+<!--      	                    onSaveCallback(true); -->
+<!--      	                }, -->
+<!--      	                error: function(xhr, status, error) { -->
+<!--      	                	console.log(error); -->
+<!--      	                    // Invoke the callback with false indicating failure -->
+<!--      	                    onSaveCallback(false); -->
+<!--      	                } -->
+<!--      	            }); -->
+<!--      	        } -->
+<!--      	    ); -->
+   </ui:composition>

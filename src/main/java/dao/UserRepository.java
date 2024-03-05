@@ -82,9 +82,10 @@ public class UserRepository extends BaseRepository<User> {
     
     public User getByUsername(String username) {
         String sql = "SELECT * FROM users WHERE user_name= ?";
-        try (Connection connection = DbContext.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
+        Connection connection = null;
+        try {
+        	connection = DbContext.getInstance().getConnection();
+        	PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -93,7 +94,12 @@ public class UserRepository extends BaseRepository<User> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            if (connection != null) {
+                DbContext.getInstance().releaseConnection(connection);
+            }
         }
+        
         return null;
     }
 }

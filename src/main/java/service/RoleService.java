@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 import dao.RoleRepository;
 import entity.Role;
 
@@ -24,5 +26,9 @@ public class RoleService{
     public boolean deleteRole(int roleId) {
         // we can add more business rules here such as any validations
         return roleRepository.delete(roleId);
+    }
+    
+    public List<Role> getAllRoles() {
+        return roleRepository.getAll();
     }
 }
