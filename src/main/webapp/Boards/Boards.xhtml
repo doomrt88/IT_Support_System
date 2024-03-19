@@ -1,0 +1,49 @@
+<ui:composition template="/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-md-3 col-lg-2">
+                    <ul class="nav flex-column nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="pill" href="#myOpenIssues">My Open Issues</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#allOpenIssues">All Open Issues</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#mySubmittedIssues">My Submitted Issues</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#closedIssues">Closed Issues</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div id="myOpenIssues" class="tab-pane fade show active">
+                        	<h3>My Open Issues</h3>
+                            <ui:include src="/Boards/myOpenIssues.xhtml" />
+                        </div>
+                        <div id="allOpenIssues" class="tab-pane fade">
+                            <h3>All Open Issues</h3>
+                            <ui:include src="/Boards/allOpenIssues.xhtml" />
+                        </div>
+                        <div id="mySubmittedIssues" class="tab-pane fade">
+                            <h3>My Submitted Issues</h3>
+                            <ui:include src="/Boards/mySubmittedIssues.xhtml" />
+                        </div>
+                        <div id="closedIssues" class="tab-pane fade">
+                            <h3>Closed Issues</h3>
+                            <ui:include src="/Boards/closedIssues.xhtml" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,9 +1,10 @@
 package entity;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 public class Issue extends BaseEntity {
-
+	
     private String title;
     private String description;
     private int priority;
@@ -13,7 +14,7 @@ public class Issue extends BaseEntity {
     private int componentId;
     private int assignedTo;
 
-    public String getTitle() {
+	public String getTitle() {
         return title;
     }
 

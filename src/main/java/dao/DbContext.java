@@ -10,8 +10,8 @@ import utility.Config;
 
 public class DbContext {
 //    private static final String DB_URL = "jdbc:mysql://localhost:3306/itsm";
-//    private static final String DB_USER = "";
-//    private static final String DB_PASSWORD = "";
+//    private static final String DB_USER = "root";
+//    private static final String DB_PASSWORD = "root";
 
 	private static final int MAX_CONNECTIONS = 10;
 
