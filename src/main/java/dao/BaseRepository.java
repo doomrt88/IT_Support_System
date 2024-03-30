@@ -156,6 +156,22 @@ public abstract class BaseRepository<T> {
         }
     }
 
+    public boolean update(T entity, Connection connection) throws SQLException {
+        String sql = getUpdateSql();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            setUpdateParameters(preparedStatement, entity);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        }
+    }
+
+    
     public boolean delete(int id) {
         String sql = "DELETE FROM " + getTableName() + " WHERE " + getIdColumnName() + " = ?";
         Connection connection = null; 
@@ -180,6 +196,19 @@ public abstract class BaseRepository<T> {
         }
     }
 
-
+    public boolean delete(int id, Connection connection) throws SQLException {
+        String sql = "DELETE FROM " + getTableName() + " WHERE " + getIdColumnName() + " = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        }
+    }
 
 }

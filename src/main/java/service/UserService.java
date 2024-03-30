@@ -70,8 +70,42 @@ public class UserService {
     }
 
     public boolean deleteUser(int userId) {
-        // we can add more business rules here such as any validations
-        return userRepository.delete(userId);
+        DbContext dbContext = DbContext.getInstance();
+        Connection connection = null;
+        try {
+            connection = dbContext.getConnection();
+            connection.setAutoCommit(false);
+
+            String deleteUserRolesSql = "DELETE FROM user_roles WHERE user_id = ?";
+            try (PreparedStatement deleteUserRolesStatement = connection.prepareStatement(deleteUserRolesSql)) {
+                deleteUserRolesStatement.setInt(1, userId);
+                deleteUserRolesStatement.executeUpdate();
+            }
+
+            boolean userDeleted = userRepository.delete(userId, connection);
+
+            connection.commit();
+            return userDeleted;
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    dbContext.releaseConnection(connection);
+                } catch (SQLException releaseException) {
+                    releaseException.printStackTrace();
+                }
+            }
+        }
     }
 
     public boolean changePassword(User user) {

@@ -3,63 +3,59 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-	
-    <div class="table-responsive">
-        <table class="table striped  table-sm">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ui:repeat value="#{userAdministrationBean.userList}" var="user">
-                    <tr>
-                        <td>#{user.username}</td>
-                        <td>#{user.firstName}</td>
-                        <td>#{user.lastName}</td>
-                        <td>
-                            <a href="#" class="btn btn-outline-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                            <a href="#" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('#{user.username}', '#{user.id}');"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>
-                </ui:repeat>
-            </tbody>
-        </table>
-    </div>
+    <h:form id="userListForm">
+        <h:dataTable value="#{userAdministrationBean.userList}" var="user" styleClass="table striped table-sm">
+            <h:column>
+                <f:facet name="header">Username</f:facet>
+                #{user.username}
+            </h:column>
+            <h:column>
+                <f:facet name="header">First Name</f:facet>
+                #{user.firstName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Last Name</f:facet>
+                #{user.lastName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <h:commandLink styleClass="btn btn-outline-primary btn-sm" action="#{userAdministrationBean.editUser(user.id)}">
+                    <i class="fas fa-pencil-alt"></i>
+                </h:commandLink>
+                <h:column>
+            <f:facet name="header">Action</f:facet>
+            <h:commandLink styleClass="btn btn-outline-danger btn-sm" onclick="confirmDelete('#{user.username}', '#{user.id}')" action="#{userAdministrationBean.deleteUser(user.id)}">
+			    <i class="fas fa-trash"></i>
+			    <f:ajax execute="@this" render="@form" oncomplete="reloadUserList()"/>
+			</h:commandLink>
+        </h:column>
+            </h:column>
+        </h:dataTable>
+    </h:form>
 
-<script>
+    <script>
         function confirmDelete(username, id) {
-            console.log(id);
-            if (confirm("Are you sure you want to delete user " + username + "?")) {
-                $.ajax({
-                	url: "/userAdministrationBean.xhtml/deleteUser",
-                    method: "GET",
-                    data: { id: id },
-                    success: function(response) {
-                    	reloadUserList();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error deleting user:", error);
-                    }
-                });
+        	var confirmMessage = "Are you sure you want to delete user " + username + "?";
+            var confirmDelete = confirm(confirmMessage);
+            if (!confirmDelete) {
+                event.preventDefault();
             }
+            
+            
         }
 
         function reloadUserList() {
-			console.log('reloading list');
-	        $.ajax({
-	            url: "/Users/UserList.xhtml",
-	            method: "GET",
-	            success: function(data) {
-	                $("#userListForm").html(data);
-	            },
-	            error: function(xhr, status, error) {
-	                console.error("Error reloading User List:", error);
-	            }
-	        });
-	    }
+            console.log('reloading list');
+            $.ajax({
+                url: "/Users/UserList.xhtml",
+                method: "GET",
+                success: function(data) {
+                    $("#userListForm").html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error reloading User List:", error);
+                }
+            });
+        }
     </script>
 </ui:composition>
