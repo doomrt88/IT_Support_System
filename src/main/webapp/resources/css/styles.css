@@ -28,3 +28,11 @@
 	background-color: #416285;
 	color: #fff !important;
 }
+
+.ui-datepicker {
+    z-index: 10000 !important;
+}
+
+.ui-calendar, .ui-calendar .ui-inputfield{
+	width: 100% !important;
+}

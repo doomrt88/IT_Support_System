@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="roleListForm">
+        <h:dataTable value="#{roleAdministrationBean.roleList}" var="role" styleClass="table striped table-sm">
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                #{role.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Description</f:facet>
+                #{role.description}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <h:commandLink styleClass="btn btn-outline-primary btn-sm mr-2" onclick="loadRoleForm(true, '#{roleAdministrationBean.serializeRole(role)}');">
+                    <i class="fas fa-edit"></i> Edit
+                </h:commandLink>
+	            <h:commandLink styleClass="btn btn-outline-danger btn-sm" onclick="return confirmDelete(event, '#{role.name}', '#{role.id}')" action="#{roleAdministrationBean.deleteRole(role.id)}">
+				    <i class="fas fa-trash"></i> Delete
+				    <f:ajax execute="@this" render="@form" oncomplete="reloadRoleList()"/>
+				</h:commandLink>
+           </h:column>
+        </h:dataTable>
+    </h:form>
+
+    <script>
+        function confirmDelete(event, rolename, id) {
+        	var confirmMessage = "Are you sure you want to delete role " + rolename + "?";
+            var confirmDelete = confirm(confirmMessage);
+            if (!confirmDelete) {
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+
+        function reloadRoleList() {
+            console.log('reloading list');
+            $.ajax({
+                url: "/Roles/RoleList.xhtml",
+                method: "GET",
+                success: function(data) {
+                    $("#roleListForm").html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error reloading Role List:", error);
+                }
+            });
+        }
+
+        function showRoleForm(data) {
+            if (data.status === 'success') {
+                $('#createRoleModal').modal('show');
+            }
+        }
+    </script>
+</ui:composition>

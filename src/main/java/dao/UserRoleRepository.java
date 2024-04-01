@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import entity.User;
 import entity.UserRole;
 
 public class UserRoleRepository extends BaseRepository<UserRole> {

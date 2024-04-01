@@ -1,7 +1,7 @@
 package service;
 
 import java.sql.Connection;
-//import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -15,11 +15,9 @@ import dao.UserRoleRepository;
 
 import java.sql.ResultSet;
 
-import entity.Role;
+
 import entity.User;
 import entity.UserRole;
-import utility.Config;
-//import utility.DbUtils;
 
 public class UserService {
 
@@ -29,36 +27,6 @@ public class UserService {
         this.userRepository = new UserRepository();
         this.userRoleRepository = new UserRoleRepository();
     }
-	
-	//private String url = System.getenv("ITSM_MYSQL_URL");
-//	private Connection connection;
-//	
-//	public void setConnection(String url) throws SQLException {
-//		System.out.println("DB URL"+url);
-//		this.connection = DriverManager.getConnection(url);
-//	}
-//	
-//	public User getUserByUsername(String username) throws SQLException {
-//		
-//		//DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-//		//con = DriverManager.getConnection(url);
-//		String query = "select * from users where user_name = ?";
-//		
-//		PreparedStatement selectUserbyUsername = connection.prepareStatement(query);
-//		selectUserbyUsername.setString(1, username);
-//		ResultSet rs= selectUserbyUsername.executeQuery();
-//		if(rs.next()) {
-//			User user = new User();
-//			user.setId(rs.getInt("user_id"));
-//			user.setUsername(rs.getString("user_name"));
-//			user.setPassword(rs.getString("password"));
-//			user.setFirstName(rs.getString("first_name"));
-//			user.setLastName(rs.getString("last_name"));
-//			user.setCreatedBy(rs.getInt("created_by"));
-//			return user;
-//		}
-//		return null;
-//	}
 	
 	public boolean createUser(User user) {
         // we can add more business rules here such as any validations. Front end validations should be done in the bean or controller

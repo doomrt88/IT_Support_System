@@ -2,6 +2,7 @@ package dao;
 
 import entity.Role;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,5 +60,29 @@ public class RoleRepository extends BaseRepository<Role> {
         preparedStatement.setInt(3, entity.getUpdatedBy());
         preparedStatement.setTimestamp(4, Timestamp.valueOf(entity.getUpdatedAt()));
         preparedStatement.setInt(5, entity.getId());
+    }
+    
+    public Role getByName(int id, String name) {
+        String sql = "SELECT * FROM roles WHERE name = ? AND role_id <> ?";
+        Connection connection = null;
+        try {
+        	connection = DbContext.getInstance().getConnection();
+        	PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToEntity(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if (connection != null) {
+                DbContext.getInstance().releaseConnection(connection);
+            }
+        }
+        
+        return null;
     }
 }
