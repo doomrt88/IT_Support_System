@@ -24,11 +24,11 @@ public class UserAdministration implements Serializable {
 
     private UserService userService = null;
     private RoleService roleService = null;
-    private List<User> userList;
+
     private List<Role> roles;
     private UserFormDTO userForm;
     private BaseResponse response;
-    
+
     
     public UserAdministration() {
         userForm = new UserFormDTO();
@@ -37,20 +37,15 @@ public class UserAdministration implements Serializable {
         userService = new UserService();
         roleService = new RoleService();
         
-        userList = userService.getAllUsers();
         roles = roleService.getAllRoles();
     }
-
+    
     
     public List<User> getUserList() {
-        return userList;
+        return userService.getAllUsers();
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
-    
-    
+  
     public void deleteUser(int id) {
 
         boolean success = userService.deleteUser(id);
@@ -78,11 +73,11 @@ public class UserAdministration implements Serializable {
         }
     }
 
-    public UserFormDTO getuserForm() {
+    public UserFormDTO getUserForm() {
         return userForm;
     }
 
-    public void setuserForm(UserFormDTO userForm) {
+    public void setUserForm(UserFormDTO userForm) {
         this.userForm = userForm;
     }
     
@@ -99,10 +94,48 @@ public class UserAdministration implements Serializable {
         return jsonb.toJson(response);
     }
     
+    public String serializeUser(User user) {
+    	Jsonb jsonb = JsonbBuilder.create();
+        return jsonb.toJson(user);
+    }
+    
     public List<Role> getRoles() {
         return roles;
     }
     
+    
+    public void saveUser(int userId) {
+        if (userId > 0) {
+            updateUser();
+        } else {
+            register();
+        }
+    }
+    
+    private void updateUser() {
+        if (!validate()) {
+            return;
+        }
+
+        User userToUpdate = new User();
+        userToUpdate.setId(userForm.getId());
+        userToUpdate.setUsername(userForm.getUsername());
+        userToUpdate.setPassword(userForm.getPassword());
+        userToUpdate.setFirstName(userForm.getFirstName());
+        userToUpdate.setLastName(userForm.getLastName());
+        userToUpdate.setRoleId(userForm.getRoleId());
+
+        boolean success = userService.updateUser(userToUpdate);
+        if (success) {
+            response.setResult(success);
+            response.setMessage("User has been updated");
+            userForm = new UserFormDTO();
+        } else {
+            response.setMessage("User update failed. Please try again.");
+        }
+    }
+
+  
     private boolean validate() {
     	if(userForm == null) return false;
     	
@@ -125,7 +158,7 @@ public class UserAdministration implements Serializable {
             errMsg = message.getDetail();
         }
     	
-    	if(userService.userExists(userForm.getUsername())) {
+    	if(userService.userExists(userForm.getId(), userForm.getUsername())) {
     		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unique field", "Username is not available.");
             FacesContext.getCurrentInstance().addMessage("userForm:username", message);
             errMsg = message.getDetail();

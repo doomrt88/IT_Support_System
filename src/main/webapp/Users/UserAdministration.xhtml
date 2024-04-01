@@ -8,7 +8,7 @@
     
     <div class="container">
         <h2>User Management</h2>
-		<button type="button" class="btn btn-outline-primary btn-sm mb-3"  onclick="loadUserForm();"><i class="fas fa-plus"></i> Create</button>
+		<button type="button" class="btn btn-outline-primary btn-sm mb-3"  onclick="loadUserForm(false, 0);"><i class="fas fa-plus"></i> Create</button>
         <div id="userListForm">
             <ui:include src="/Users/UserList.xhtml" />
         </div>
@@ -35,9 +35,88 @@
 	    </div>
     </div>
 	<script>
-		
+
+	function loadUserForm(isEdit, user) {
+		console.log(user);
+	    console.log("I'm clicked");
+	    if (isEdit) {
+	        $('#createUserModalTitle').text('Edit User');
+	    } else {
+	        $('#createUserModalTitle').text('Create User');
+	    }
+	    
+	    $.ajax({
+	        url: "/Users/UserForm.xhtml",
+	        method: "GET",
+	        success: function(data) {
+	            // Load the response data into the modal body
+	            $("#createUserModal .modal-body").html(data);
+	            
+	            // If it's an edit operation, load the user details
+	            if (isEdit) {
+	                loadUserData(user);
+	            }
+	            
+	            // Show the modal
+	            $('#createUserModal').modal('show');
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("Error loading UserForm:", error);
+	        }
+	    });
+	}
+
+	function loadUserData(userJson) {
+		var user = JSON.parse(userJson);
+	    
+	    // Populate the form fields with the user data
+	    $('#userForm\\:username').val(user.username);
+	    $('#userForm\\:password').val(user.password);
+	    $('#userForm\\:confirmPassword').val(user.confirmPassword);
+	    $('#userForm\\:firstName').val(user.firstName);
+	    $('#userForm\\:lastName').val(user.lastName);
+	    $('#userForm\\:roleId').val(user.roleId);
+	    $('#userForm\\:id').val(user.id);
+	    /*$.ajax({
+	        url: "/Users/editUser",
+	        method: "GET",
+	        data: { userId: userId },
+	        success: function(userData) {
+		        console.log(userData);
+	            $('#username').val(userData.username);
+	            $('#firstName').val(userData.firstName);
+	            $('#lastName').val(userData.lastName);
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("Error loading user data:", error);
+	        }
+	    });*/
+	}
+
     
-        function loadUserForm() {
+	/*function loadUserForm(isEdit, userId) {
+		console.log("I'm clicked");
+        if (isEdit) {
+            $('#createUserModalTitle').text('Edit User');
+        } else {
+            $('#createUserModalTitle').text('Create User');
+        }
+        
+        var url = isEdit ? "/Users/EditUser.xhtml?userId=" + userId : "/Users/CreateUser.xhtml";
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(data) {
+                $("#createUserModal .modal-body").html(data);
+                $('#createUserModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error("Error loading User Form:", error);
+            }
+        });
+    }*/
+    
+/*         function loadUserForm() {
             $('#createUserModal').modal('show');
             // AJAX call to load the User Form content dynamically
 //             $.ajax({
@@ -50,7 +129,7 @@
 //                     console.error("Error loading User Form:", error);
 //                 }
 //             });
-        }
+        } */
     </script>
 <!-- 	<script> -->
 

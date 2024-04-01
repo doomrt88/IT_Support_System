@@ -3,6 +3,7 @@ package models.dto;
 @SuppressWarnings("serial")
 public class UserFormDTO extends RegistrationFormDTO {
     private int roleId;
+    private int id;
 
     // 
     public UserFormDTO() {
@@ -17,6 +18,14 @@ public class UserFormDTO extends RegistrationFormDTO {
         this.roleId = roleId;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getRoleId() {
         return roleId;
     }

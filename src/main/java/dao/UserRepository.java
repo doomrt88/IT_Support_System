@@ -68,25 +68,14 @@ public class UserRepository extends BaseRepository<User> {
         preparedStatement.setInt(7, entity.getId());
     }
     
-
-    
-    public boolean insertUserRole(int userId, int roleId, Connection connection) throws SQLException {
-        String sql = "INSERT INTO user_roles (user_id, role_id) VALUES (?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, roleId);
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected == 1;
-        }
-    }
-    
-    public User getByUsername(String username) {
-        String sql = "SELECT * FROM users WHERE user_name= ?";
+    public User getByUsername(int userId, String username) {
+        String sql = "SELECT * FROM users WHERE user_name= ? AND user_id <> ?";
         Connection connection = null;
         try {
         	connection = DbContext.getInstance().getConnection();
         	PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username);
+            preparedStatement.setInt(2, userId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToEntity(resultSet);

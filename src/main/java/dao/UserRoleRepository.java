@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import entity.User;
 import entity.UserRole;
 
 public class UserRoleRepository extends BaseRepository<UserRole> {
@@ -56,5 +57,37 @@ public class UserRoleRepository extends BaseRepository<UserRole> {
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected == 1;
         }
+    }
+    
+    public boolean deleteUserRoles(int userId, Connection connection) throws SQLException {
+        String sql = "DELETE FROM user_roles WHERE user_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected == 1;
+        }
+    }
+    
+    public UserRole getByUserId(int userId) {
+        String sql = "SELECT * FROM user_roles WHERE user_id= ? ORDER BY role_id LIMIT 1";
+        Connection connection = null;
+        try {
+        	connection = DbContext.getInstance().getConnection();
+        	PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToEntity(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if (connection != null) {
+                DbContext.getInstance().releaseConnection(connection);
+            }
+        }
+        
+        return null;
     }
 }

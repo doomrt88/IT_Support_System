@@ -75,7 +75,7 @@ public class UserRegistration {
             errMsg = message.getDetail();
         }
     	
-    	if(userService.userExists(registrationForm.getUsername())) {
+    	if(userService.userExists(0, registrationForm.getUsername())) {
     		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unique field", "Username is not available.");
             FacesContext.getCurrentInstance().addMessage("registrationForm:username", message);
             errMsg = message.getDetail();

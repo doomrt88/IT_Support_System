@@ -19,29 +19,27 @@
             </h:column>
             <h:column>
                 <f:facet name="header">Action</f:facet>
-                <h:commandLink styleClass="btn btn-outline-primary btn-sm" action="#{userAdministrationBean.editUser(user.id)}">
-                    <i class="fas fa-pencil-alt"></i>
+                <h:commandLink styleClass="btn btn-outline-primary btn-sm mr-2" onclick="loadUserForm(true, '#{userAdministrationBean.serializeUser(user)}');">
+                    <i class="fas fa-edit"></i> Edit
                 </h:commandLink>
-                <h:column>
-            <f:facet name="header">Action</f:facet>
-            <h:commandLink styleClass="btn btn-outline-danger btn-sm" onclick="confirmDelete('#{user.username}', '#{user.id}')" action="#{userAdministrationBean.deleteUser(user.id)}">
-			    <i class="fas fa-trash"></i>
-			    <f:ajax execute="@this" render="@form" oncomplete="reloadUserList()"/>
-			</h:commandLink>
-        </h:column>
-            </h:column>
+	            <h:commandLink styleClass="btn btn-outline-danger btn-sm" onclick="return confirmDelete(event, '#{user.username}', '#{user.id}')" action="#{userAdministrationBean.deleteUser(user.id)}">
+				    <i class="fas fa-trash"></i> Delete
+				    <f:ajax execute="@this" render="@form" oncomplete="reloadUserList()"/>
+				</h:commandLink>
+           </h:column>
         </h:dataTable>
     </h:form>
 
     <script>
-        function confirmDelete(username, id) {
+        function confirmDelete(event, username, id) {
         	var confirmMessage = "Are you sure you want to delete user " + username + "?";
             var confirmDelete = confirm(confirmMessage);
             if (!confirmDelete) {
                 event.preventDefault();
+                return false;
             }
-            
-            
+
+            return true;
         }
 
         function reloadUserList() {
@@ -56,6 +54,12 @@
                     console.error("Error reloading User List:", error);
                 }
             });
+        }
+
+        function showUserForm(data) {
+            if (data.status === 'success') {
+                $('#createUserModal').modal('show');
+            }
         }
     </script>
 </ui:composition>

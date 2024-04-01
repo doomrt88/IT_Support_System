@@ -11,18 +11,23 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import dao.DbContext;
 import dao.UserRepository;
+import dao.UserRoleRepository;
 
 import java.sql.ResultSet;
 
+import entity.Role;
 import entity.User;
+import entity.UserRole;
 import utility.Config;
 //import utility.DbUtils;
 
 public class UserService {
 
 	private UserRepository userRepository;
+	private UserRoleRepository userRoleRepository;
 	public UserService() {
         this.userRepository = new UserRepository();
+        this.userRoleRepository = new UserRoleRepository();
     }
 	
 	//private String url = System.getenv("ITSM_MYSQL_URL");
@@ -66,7 +71,43 @@ public class UserService {
 
     public boolean updateUser(User user) {
         // we can add more business rules here such as any validations
-    	return userRepository.update(user);
+    	DbContext dbContextPool = DbContext.getInstance();
+        
+        // Start a new transaction
+        Connection connection = null;
+        try {
+            connection = dbContextPool.getConnection();
+            connection.setAutoCommit(false); // Start transaction
+            String hashedPassword = hashPassword(user.getPassword());
+            user.setPassword(hashedPassword);
+            user.setUpdatedAt(LocalDateTime.now());
+            
+            boolean updateSuccess = userRepository.update(user, connection);
+            if (updateSuccess) {
+            	userRoleRepository.deleteUserRoles(user.getId(), connection);
+                if (userRoleRepository.insertUserRole(user.getId(), user.getRoleId(), connection)) {
+                    connection.commit();
+                    return true;
+                }
+            }
+
+            connection.rollback();
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            return false;
+        } finally { 
+            if (connection != null) {
+                dbContextPool.releaseConnection(connection);
+            }
+        }
     }
 
     public boolean deleteUser(int userId) {
@@ -123,15 +164,22 @@ public class UserService {
 
     
     public List<User> getAllUsers() {
-        return userRepository.getAll();
+    	List<User> users = userRepository.getAll();
+        for (User user : users) {
+            UserRole userRole = userRoleRepository.getByUserId(user.getId());
+            if(userRole != null) {
+                user.setRoleId(userRole.getRoleId());
+            }
+        }
+        return users;
     }
 
     public User getUserById(int userId) {
         return userRepository.getById(userId);
     }
     
-    public boolean userExists(String username) {
-        return userRepository.getByUsername(username) != null;
+    public boolean userExists(int userId, String username) {
+        return userRepository.getByUsername(userId, username) != null;
     }
 	
 	public boolean authenticateUser(String username, String password) {
@@ -170,6 +218,7 @@ public class UserService {
         user.setPassword(hashedPassword);
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setRoleId(roleId);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         
@@ -184,7 +233,7 @@ public class UserService {
 
             int userId = userRepository.insert(user, connection);
             if (userId != -1) {
-                if (userRepository.insertUserRole(userId, roleId, connection)) {
+                if (userRoleRepository.insertUserRole(userId, roleId, connection)) {
                     connection.commit();
                     return true;
                 }
