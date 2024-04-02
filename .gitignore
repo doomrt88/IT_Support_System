@@ -1,0 +1,35 @@
+/META-INF/
+# Metadata
+.metadata
+
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA files
+.idea/
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# Maven specific files and directories
+target/
+dependency-reduced-pom.xml
+build.log
+
+# Gradle specific files and directories
+.gradle/
+build/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp

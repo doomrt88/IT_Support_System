@@ -1,0 +1,49 @@
+<ui:composition template="/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-md-3 col-lg-2">
+                    <ul class="nav flex-column nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="pill" href="#users">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#roles">Roles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#projects">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#components">Components</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div id="users" class="tab-pane fade show active">
+                            <ui:include src="/Users/UserAdministration.xhtml" />
+                        </div>
+                        <div id="roles" class="tab-pane fade">
+                            <h3>Roles</h3>
+                            <p>List of roles goes here.</p>
+                        </div>
+                        <div id="projects" class="tab-pane fade">
+                            <h3>Projects</h3>
+                            <p>List of projects goes here.</p>
+                        </div>
+                        <div id="components" class="tab-pane fade">
+                            <h3>Components</h3>
+                            <p>List of components goes here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+    <ui:include src="/Dialog.xhtml" />
+</ui:composition>
