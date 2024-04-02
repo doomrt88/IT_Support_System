@@ -6,6 +6,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import dao.IssueDAO;
+import dao.UserRepository;
 import entity.IssueBoard;
 
 @Named(value="issueBean")
@@ -38,7 +39,6 @@ public class IssueBean implements Serializable{
     }
 
     public void setEntity(IssueBoard entity) {
-        this.issue = entity;
     }
     
     public List<IssueBoard> getAll() {
@@ -46,7 +46,7 @@ public class IssueBean implements Serializable{
     }
     
     public List<IssueBoard> getAssignedIssues_ByUserStatusOpen() {
-        return this.getIssueDao().getAssignedIssues_ByUserStatus(2, States.OPEN);
+        return this.getIssueDao().getAssignedIssues_ByUserStatus(1, States.OPEN);
     }
     
     public List<IssueBoard> getIssues_ByStatusOpen() {

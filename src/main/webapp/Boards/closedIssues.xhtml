@@ -1,22 +1,40 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:h="http://java.sun.com/jsf/html"> 
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html">
 
-<h:head></h:head> 
+<h:head></h:head>
 <body>
-  <h:dataTable value="#{issueBean.getIssues_ByStatusClose()}" var="c">
-                <h:column>
-                    <f:facet name ="header">Issue ID</f:facet>
-                    #{c.issueID}
-                </h:column>
-                <h:column>
-                    <f:facet name ="header">Title</f:facet>
-                    #{c.title}
-                </h:column>
-   </h:dataTable>
-</body> 
+	<div class="container">
+		<h2>Closed Issues</h2>
+		
+		<div class="table-responsive">
+			<table class="table striped  table-sm">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Created</th>
+						<th>Due Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<ui:repeat value="#{issueBean.getIssues_ByStatusClose()}" var="c">
+						<tr>
+							<td>#{c.issueID}</td>
+							<td>#{c.title}</td>
+							<td>#{c.description}</td>
+							<td>#{c.createdAt}</td>
+							<td>#{c.dueDate}</td>
+						</tr>
+					</ui:repeat>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
 </html>
