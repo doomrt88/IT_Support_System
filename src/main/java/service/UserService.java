@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -18,6 +19,7 @@ import java.sql.ResultSet;
 
 import entity.User;
 import entity.UserRole;
+import models.dto.UserDTO;
 
 public class UserService {
 
@@ -62,20 +64,26 @@ public class UserService {
             connection.rollback();
             return false;
         } catch (SQLException e) {
-            e.printStackTrace();
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            return false;
-        } finally { 
-            if (connection != null) {
-                dbContextPool.releaseConnection(connection);
-            }
-        }
+	        e.printStackTrace();
+	        if (connection != null) {
+	            try {
+	                connection.rollback();
+	            } catch (SQLException ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	        return false;
+	    } finally {
+	        // Release connection
+	        if (connection != null) {
+	            try {
+	                connection.setAutoCommit(true);
+	                dbContextPool.releaseConnection(connection);
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
     }
 
     public boolean deleteUser(int userId) {
@@ -131,15 +139,20 @@ public class UserService {
     }
 
     
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
     	List<User> users = userRepository.getAll();
+    	List<UserDTO> usersDTO = new ArrayList<>();
+    	
         for (User user : users) {
             UserRole userRole = userRoleRepository.getByUserId(user.getId());
             if(userRole != null) {
                 user.setRoleId(userRole.getRoleId());
             }
+            
+            usersDTO.add(mapUserEntityToDTO(user));
         }
-        return users;
+        
+        return usersDTO;
     }
 
     public User getUserById(int userId) {
@@ -210,24 +223,43 @@ public class UserService {
             connection.rollback();
             return false;
         } catch (SQLException e) {
-            e.printStackTrace();
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            return false;
-        } finally { 
-            if (connection != null) {
-                dbContextPool.releaseConnection(connection);
-            }
-        }
+	        e.printStackTrace();
+	        if (connection != null) {
+	            try {
+	                connection.rollback();
+	            } catch (SQLException ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	        return false;
+	    } finally {
+	        // Release connection
+	        if (connection != null) {
+	            try {
+	                connection.setAutoCommit(true);
+	                dbContextPool.releaseConnection(connection);
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
     }
 	
 	
 	private String hashPassword(String password) {
 		return BCrypt.hashpw(password, BCrypt.gensalt(10));
 	}
+	
+	private UserDTO mapUserEntityToDTO(User user){
+		UserDTO userDTO = new UserDTO();
+        
+        userDTO.setId(user.getId());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setRoleId(user.getRoleId());
+        
+        return userDTO;
+    }
 }

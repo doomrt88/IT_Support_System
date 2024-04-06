@@ -23,7 +23,6 @@ public abstract class BaseRepository<T> {
     
     public List<T> getAll() {
         List<T> entities = new ArrayList<>();
-        //List<ResultSet> test = new ArrayList<>();
         String sql = "SELECT * FROM " + getTableName();
 
         Connection connection = null; 

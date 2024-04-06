@@ -3,19 +3,19 @@ package beans.administration;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-
 import entity.Role;
 import entity.User;
 import models.dto.BaseResponse;
-import models.dto.UserFormDTO;
+import models.dto.UserDTO;
 import service.RoleService;
 import service.UserService;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+
+import org.primefaces.PrimeFaces;
 
 @SuppressWarnings("serial")
 @Named("userAdministrationBean")
@@ -26,12 +26,12 @@ public class UserAdministration implements Serializable {
     private RoleService roleService = null;
 
     private List<Role> roles;
-    private UserFormDTO userForm;
+    private UserDTO userForm;
     private BaseResponse response;
 
-    
-    public UserAdministration() {
-        userForm = new UserFormDTO();
+    @PostConstruct
+    public void initialize() {
+    	userForm = new UserDTO();
         response = new BaseResponse();
         
         userService = new UserService();
@@ -39,23 +39,56 @@ public class UserAdministration implements Serializable {
         
         roles = roleService.getAllRoles();
     }
-    
-    
-    public List<User> getUserList() {
-        return userService.getAllUsers();
+
+    public void editUser(UserDTO user) {
+		
+    	this.userForm.setId(user.getId());
+    	this.userForm.setUsername(user.getUsername());
+    	this.userForm.setPassword(user.getPassword());
+    	this.userForm.setFirstName(user.getFirstName());
+    	this.userForm.setLastName(user.getLastName());
+    	this.userForm.setRoleId(user.getRoleId());
+        
     }
 
-  
+    public UserDTO getUserForm() {
+        return userForm;
+    }
+
+    public void setUserForm(UserDTO userForm) {
+        this.userForm = userForm;
+    }
+    
+    public List<Role> getRoles() {
+        return roles;
+    }
+    
+    public List<UserDTO> getUserList() {
+        return userService.getAllUsers();
+    }
+    
+    public void saveUser() {
+    	if (userForm.getId() > 0) {
+    		updateUser();
+        } else {
+        	register();
+        }
+    }
+    
     public void deleteUser(int id) {
 
         boolean success = userService.deleteUser(id);
         if (success) {
         	response.setResult(success);
             response.setMessage("User has been deleted");
-            userForm = new UserFormDTO();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been deleted"));
+            clearForm();
         } else {
         	response.setMessage("User deletion failed. Please try again.");
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User deletion failed. Please try again."));
         }
+        
+        PrimeFaces.current().ajax().update("form:userMessages", "form:usersTable");
     }
     
     public void register() {
@@ -67,48 +100,13 @@ public class UserAdministration implements Serializable {
         if (success) {
         	response.setResult(success);
             response.setMessage("User has been added");
-            userForm = new UserFormDTO();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been added"));
+            FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('userDialog').hide()");
+            
+            clearForm();
         } else {
         	response.setMessage("User creation failed. Please try again.");
-        }
-    }
-
-    public UserFormDTO getUserForm() {
-        return userForm;
-    }
-
-    public void setUserForm(UserFormDTO userForm) {
-        this.userForm = userForm;
-    }
-    
-    public BaseResponse getResponse() {
-    	return this.response;
-    }
-
-    public void setResponse(BaseResponse response) {
-        this.response = response;
-    }
-    
-    public String getResponseJson() {
-        Jsonb jsonb = JsonbBuilder.create();
-        return jsonb.toJson(response);
-    }
-    
-    public String serializeUser(User user) {
-    	Jsonb jsonb = JsonbBuilder.create();
-        return jsonb.toJson(user);
-    }
-    
-    public List<Role> getRoles() {
-        return roles;
-    }
-    
-    
-    public void saveUser(int userId) {
-        if (userId > 0) {
-            updateUser();
-        } else {
-            register();
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User"));
         }
     }
     
@@ -129,10 +127,14 @@ public class UserAdministration implements Serializable {
         if (success) {
             response.setResult(success);
             response.setMessage("User has been updated");
-            userForm = new UserFormDTO();
+            clearForm();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been updated"));
         } else {
             response.setMessage("User update failed. Please try again.");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User update failed. Please try again."));
         }
+        
+        PrimeFaces.current().ajax().update("form:userMessages", "form:usersTable");
     }
 
   
@@ -172,6 +174,16 @@ public class UserAdministration implements Serializable {
     	
     	return errMsg.isEmpty();
     	
+    }
+    
+    private void clearForm() {
+    	UserDTO user = new UserDTO();
+    	user.setId(user.getId());
+    	user.setUsername(user.getUsername());
+    	user.setPassword(user.getPassword());
+    	user.setFirstName(user.getFirstName());
+    	user.setLastName(user.getLastName());
+    	user.setRoleId(user.getRoleId());
     }
     
 }

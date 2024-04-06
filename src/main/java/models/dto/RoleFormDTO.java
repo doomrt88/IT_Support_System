@@ -1,12 +1,17 @@
 package models.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings("serial")
 public class RoleFormDTO {
     private int id;
     private String name;
     private String description;
+    private List<String> permissions;
     
     public RoleFormDTO() {
+    	this.permissions = new ArrayList<>();
     }
 
     public int getId() {
@@ -31,5 +36,13 @@ public class RoleFormDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
 }

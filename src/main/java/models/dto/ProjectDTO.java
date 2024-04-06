@@ -3,14 +3,14 @@ package models.dto;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("serial")
-public class ProjectFormDTO {
+public class ProjectDTO {
     private int id;
     private String name;
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     
-    public ProjectFormDTO() {
+    public ProjectDTO() {
     }
 
     public int getId() {

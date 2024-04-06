@@ -1,15 +1,15 @@
 package models.dto;
 
 @SuppressWarnings("serial")
-public class UserFormDTO extends RegistrationFormDTO {
+public class UserDTO extends RegistrationFormDTO {
     private int roleId;
     private int id;
 
     // 
-    public UserFormDTO() {
+    public UserDTO() {
     }
 
-    public UserFormDTO(String username, String password, String confirmPassword, String firstName, String lastName, int roleId) {
+    public UserDTO(String username, String password, String confirmPassword, String firstName, String lastName, int roleId) {
         this.username = username;
         this.password = password;
         this.confirmPassword = confirmPassword;

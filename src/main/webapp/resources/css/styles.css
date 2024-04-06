@@ -36,3 +36,15 @@
 .ui-calendar, .ui-calendar .ui-inputfield{
 	width: 100% !important;
 }
+
+input[type=checkbox]{
+	margin-right: 5px;
+}
+
+.grid-checkbox td {
+    padding: .5rem;
+}
+
+body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon{
+	    margin-top: -0.7rem !important;
+}
