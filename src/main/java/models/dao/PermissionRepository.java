@@ -1,6 +1,6 @@
-package dao;
+package models.dao;
 
-import entity.Permission;
+import models.entity.Permission;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

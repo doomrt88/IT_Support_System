@@ -1,6 +1,6 @@
-package dao;
+package models.dao;
 
-import entity.Comment;
+import models.entity.Comment;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

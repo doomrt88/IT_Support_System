@@ -1,9 +1,9 @@
 package service;
 
-import dao.CommentRepository;
-import dao.IssueRepository;
-import entity.Comment;
-import entity.Issue;
+import models.dao.CommentRepository;
+import models.dao.IssueRepository;
+import models.entity.Comment;
+import models.entity.Issue;
 
 public class IssueService{
 	private IssueRepository issueRepository;

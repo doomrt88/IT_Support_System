@@ -1,6 +1,6 @@
-package dao;
+package models.dao;
 
-import entity.Role;
+import models.entity.Role;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

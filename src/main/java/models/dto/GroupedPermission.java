@@ -2,7 +2,7 @@ package models.dto;
 
 import java.util.List;
 
-import entity.Permission;
+import models.entity.Permission;
 
 public class GroupedPermission {
     private String groupName;

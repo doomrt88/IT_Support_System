@@ -1,6 +1,6 @@
-package dao;
+package models.dao;
 
-import entity.Project;
+import models.entity.Project;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

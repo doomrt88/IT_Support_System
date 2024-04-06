@@ -9,7 +9,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import entity.Project;
+import models.entity.Project;
 import models.dto.ProjectDTO;
 import service.ProjectService;
 

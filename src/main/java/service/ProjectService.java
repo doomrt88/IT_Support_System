@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.ProjectRepository;
-import entity.Project;
-import entity.User;
-import entity.UserRole;
+import models.dao.ProjectRepository;
+import models.entity.Project;
+import models.entity.User;
+import models.entity.UserRole;
 import models.dto.ProjectDTO;
 import models.dto.UserDTO;
 

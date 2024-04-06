@@ -18,8 +18,8 @@ import service.RoleService;
 
 import org.primefaces.PrimeFaces;
 
-import entity.Permission;
-import entity.Role;
+import models.entity.Permission;
+import models.entity.Role;
 
 @SuppressWarnings("serial")
 @Named("roleAdministrationBean")

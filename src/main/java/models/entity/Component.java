@@ -1,13 +1,15 @@
-package entity;
+package models.entity;
 
 import java.time.LocalDateTime;
 
-public class Project extends BaseEntity {
+public class Component extends BaseEntity {
 
     private String name;
     private String description;
+    private String type;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private int projectId;
 
     public String getName() {
         return name;
@@ -25,6 +27,14 @@ public class Project extends BaseEntity {
         this.description = description;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public LocalDateTime getStartDate() {
         return startDate;
     }
@@ -39,5 +49,13 @@ public class Project extends BaseEntity {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 }

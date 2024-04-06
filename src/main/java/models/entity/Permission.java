@@ -1,4 +1,4 @@
-package entity;
+package models.entity;
 
 public class Permission {
     private String code;

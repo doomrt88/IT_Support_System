@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dao.DbContext;
-import dao.PermissionRepository;
-import dao.RolePermissionRepository;
-import dao.RoleRepository;
-import entity.Permission;
-import entity.Role;
-import entity.RolePermission;
+import models.dao.DbContext;
+import models.dao.PermissionRepository;
+import models.dao.RolePermissionRepository;
+import models.dao.RoleRepository;
+import models.entity.Permission;
+import models.entity.Role;
+import models.entity.RolePermission;
 import models.dto.GroupedPermission;
 import models.dto.RoleFormDTO;
 

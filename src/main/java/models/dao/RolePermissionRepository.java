@@ -1,6 +1,6 @@
-package dao;
+package models.dao;
 
-import entity.RolePermission;
+import models.entity.RolePermission;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

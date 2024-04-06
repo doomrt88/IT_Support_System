@@ -1,4 +1,4 @@
-package entity;
+package models.entity;
 
 public class User extends BaseEntity {
 

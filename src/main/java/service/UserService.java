@@ -10,15 +10,15 @@ import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import dao.DbContext;
-import dao.UserRepository;
-import dao.UserRoleRepository;
+import models.dao.DbContext;
+import models.dao.UserRepository;
+import models.dao.UserRoleRepository;
 
 import java.sql.ResultSet;
 
 
-import entity.User;
-import entity.UserRole;
+import models.entity.User;
+import models.entity.UserRole;
 import models.dto.UserDTO;
 
 public class UserService {

@@ -1,11 +1,11 @@
-package dao;
+package models.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import entity.UserRole;
+import models.entity.UserRole;
 
 public class UserRoleRepository extends BaseRepository<UserRole> {
 

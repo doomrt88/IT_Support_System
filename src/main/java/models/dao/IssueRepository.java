@@ -1,6 +1,6 @@
-package dao;
+package models.dao;
 
-import entity.Issue;
+import models.entity.Issue;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
