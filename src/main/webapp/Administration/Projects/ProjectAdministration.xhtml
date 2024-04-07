@@ -17,6 +17,14 @@
 				styleClass="table striped table-sm" paginator="true" rows="5"  paginatorPosition="bottom">
 				<p:column headerText="Name">#{project.name}</p:column>
 				<p:column headerText="Description">#{project.description}</p:column>
+				<p:column headerText="Start Date">
+				    <h:outputText value="#{projectAdministrationBean.formatDateTime(project.startDate)}" />
+				</p:column>
+				<p:column headerText="End Date">
+				    <h:outputText value="#{projectAdministrationBean.formatDateTime(project.endDate)}" />
+				</p:column>
+
+
 				<p:column headerText="Action">
 					<p:commandButton value="Edit"
 						action="#{projectAdministrationBean.editProject(project)}" 
@@ -54,7 +62,6 @@
 					value="#{projectAdministrationBean.projectForm.description}"
 					autocomplete="off" />
 			</div>
-
 			<div class="form-group">
                 <label for="startDate">Start Date:</label>
                 <p:datePicker id="startDate" value="#{projectAdministrationBean.projectForm.startDate}" widgetVar="startDateWidget"  required="true" requiredMessage="Start date is required" pattern="yyyy-MM-dd" showOn="button" mode="date"  showTime="false"  converter="localDateTimeConverter"/>

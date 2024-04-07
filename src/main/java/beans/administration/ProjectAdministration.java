@@ -2,6 +2,7 @@ package beans.administration;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -34,10 +35,10 @@ public class ProjectAdministration implements Serializable {
     public void editProject(ProjectDTO project) {
 		
     	this.projectForm.setId(project.getId());
-    	this.projectForm.setName(projectForm.getName());
-    	this.projectForm.setDescription(projectForm.getDescription());
-    	this.projectForm.setStartDate(projectForm.getStartDate());
-    	this.projectForm.setEndDate(projectForm.getEndDate());
+    	this.projectForm.setName(project.getName());
+    	this.projectForm.setDescription(project.getDescription());
+    	this.projectForm.setStartDate(project.getStartDate());
+    	this.projectForm.setEndDate(project.getEndDate());
         
     }
 
@@ -51,6 +52,14 @@ public class ProjectAdministration implements Serializable {
     
     public List<ProjectDTO> getProjectList() {
         return projectService.getAllProjects();
+    }
+    
+    public String formatDateTime(LocalDateTime dateTime) {
+        if (dateTime != null) {
+            return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } else {
+            return "";
+        }
     }
     
     public void saveProject() {
@@ -142,10 +151,18 @@ public class ProjectAdministration implements Serializable {
 	        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid dates", "Start date cannot be after end date.");
 	        FacesContext.getCurrentInstance().addMessage("projectForm:startDate", message);
 	        FacesContext.getCurrentInstance().addMessage("projectForm:endDate", message);
+	        FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('projectDialog').show()");
+	        
 	        errMsg = message.getDetail();
 	    }
 	    
-		return errMsg.isEmpty();
+    	boolean isValid = errMsg.isEmpty();
+    	
+    	if(!isValid) {
+    		FacesContext.getCurrentInstance().validationFailed();
+    	}
+    	
+    	return isValid;
 		
 	}
     

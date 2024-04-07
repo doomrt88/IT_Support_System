@@ -58,8 +58,11 @@ public class ProjectRepository extends BaseRepository<Project> {
         preparedStatement.setString(1, entity.getName());
         preparedStatement.setString(2, entity.getDescription());
         
-        preparedStatement.setTimestamp(3, Timestamp.valueOf(entity.getStartDate()));
-        preparedStatement.setTimestamp(4, Timestamp.valueOf(entity.getEndDate()));
+        preparedStatement.setObject(3, entity.getStartDate());
+        preparedStatement.setObject(4, entity.getEndDate());
+        
+//        preparedStatement.setTimestamp(3, Timestamp.valueOf(entity.getStartDate()));
+//        preparedStatement.setTimestamp(4, Timestamp.valueOf(entity.getEndDate()));
         preparedStatement.setInt(5, entity.getCreatedBy());
         preparedStatement.setTimestamp(6, Timestamp.valueOf(entity.getCreatedAt()));
         preparedStatement.setInt(7, entity.getUpdatedBy());
@@ -70,8 +73,11 @@ public class ProjectRepository extends BaseRepository<Project> {
     protected void setUpdateParameters(PreparedStatement preparedStatement, Project entity) throws SQLException {
         preparedStatement.setString(1, entity.getName());
         preparedStatement.setString(2, entity.getDescription());        
-        preparedStatement.setTimestamp(3, Timestamp.valueOf(entity.getStartDate()));
-        preparedStatement.setTimestamp(4, Timestamp.valueOf(entity.getEndDate()));
+        preparedStatement.setObject(3, entity.getStartDate());
+        preparedStatement.setObject(4, entity.getEndDate());
+        
+//        preparedStatement.setTimestamp(3, Timestamp.valueOf(entity.getStartDate()));
+//        preparedStatement.setTimestamp(4, Timestamp.valueOf(entity.getEndDate()));
         preparedStatement.setInt(5, entity.getUpdatedBy());
         preparedStatement.setTimestamp(6, Timestamp.valueOf(entity.getUpdatedAt()));
         preparedStatement.setInt(7, entity.getId());
@@ -111,8 +117,12 @@ public class ProjectRepository extends BaseRepository<Project> {
     public static LocalDateTime convertUtcToLocal(Timestamp utcTimestamp) {
         LocalDateTime utcDateTime = utcTimestamp.toLocalDateTime();
         ZoneId utcZoneId = ZoneId.of("UTC");
+        //ZonedDateTime utcZonedDateTime = ZonedDateTime.of(utcDateTime, utcZoneId);
+        //ZonedDateTime localZonedDateTime = utcZonedDateTime.withZoneSameInstant(ZoneId.systemDefault());
+        
         ZonedDateTime utcZonedDateTime = ZonedDateTime.of(utcDateTime, utcZoneId);
-        ZonedDateTime localZonedDateTime = utcZonedDateTime.withZoneSameInstant(ZoneId.systemDefault());
+        ZoneId targetZoneId = ZoneId.of("UTC+8"); // Set target time zone to UTC+8
+        ZonedDateTime localZonedDateTime = utcZonedDateTime.withZoneSameInstant(targetZoneId);
         return localZonedDateTime.toLocalDateTime();
     }
 }

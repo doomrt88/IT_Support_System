@@ -11,9 +11,11 @@ import javax.inject.Named;
 import models.entity.Role;
 import models.entity.User;
 import models.dto.BaseResponse;
+import models.dto.RegistrationFormDTO;
 import models.dto.UserDTO;
 import service.RoleService;
 import service.UserService;
+import utility.Config;
 
 import org.primefaces.PrimeFaces;
 
@@ -67,11 +69,11 @@ public class UserAdministration implements Serializable {
         return userService.getAllUsers();
     }
     
-    public void saveUser() {
+    public void saveUser(boolean isRegistration) {
     	if (userForm.getId() > 0) {
     		updateUser();
         } else {
-        	register();
+        	createUser(isRegistration);
         }
     }
     
@@ -91,17 +93,26 @@ public class UserAdministration implements Serializable {
         PrimeFaces.current().ajax().update("form:userMessages", "form:usersTable");
     }
     
-    public void register() {
-        if (!validate()) {
+    public void createUser(boolean isRegistration) {
+        if (!validate(isRegistration)) {
             return;
         }
 
-        boolean success = userService.registerUser(userForm.getUsername(), userForm.getPassword(), userForm.getFirstName(), userForm.getLastName(), userForm.getRoleId());
+        int roleId = isRegistration ? Config.getDefaultRoleId() : userForm.getRoleId();
+        boolean success = userService.registerUser(userForm.getUsername(), userForm.getPassword(), userForm.getFirstName(), userForm.getLastName(), roleId);
         if (success) {
         	response.setResult(success);
             response.setMessage("User has been added");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been added"));
-            FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('userDialog').hide()");
+            
+            if(isRegistration) {
+            	response.setResult(success);
+            	String msg = "Registration successful! Welcome, " + userForm.getFirstName() + " " + userForm.getLastName() + "!";
+                response.setMessage(msg);
+            	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+            }else{
+            	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been added"));
+                FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('userDialog').hide()");
+            }
             
             clearForm();
         } else {
@@ -111,7 +122,7 @@ public class UserAdministration implements Serializable {
     }
     
     private void updateUser() {
-        if (!validate()) {
+        if (!validate(false)) {
             return;
         }
 
@@ -138,7 +149,7 @@ public class UserAdministration implements Serializable {
     }
 
   
-    private boolean validate() {
+    private boolean validate(boolean isRegistration) {
     	if(userForm == null) return false;
     	
     	String errMsg = "";
@@ -166,13 +177,19 @@ public class UserAdministration implements Serializable {
             errMsg = message.getDetail();
     	}
     	
-    	if (userForm.getRoleId() < 1) {
+    	if (!isRegistration && userForm.getRoleId() < 1) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Required field", "Role is required.");
             FacesContext.getCurrentInstance().addMessage("userForm:roleId", message);
             errMsg = message.getDetail();
         }
     	
-    	return errMsg.isEmpty();
+		boolean isValid = errMsg.isEmpty();
+    	
+    	if(!isValid) {
+    		FacesContext.getCurrentInstance().validationFailed();
+    	}
+    	
+    	return isValid;
     	
     }
     

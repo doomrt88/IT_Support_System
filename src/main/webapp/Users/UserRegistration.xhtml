@@ -14,57 +14,60 @@
 <h:body>
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Registration Form</h2>
+        <p:messages id="messages" showDetail="true" />
         <div class="d-flex justify-content-center">
             <div class="col-md-6">
              <div class="border p-4">
-                <h:form id="registrationForm">
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <h:inputText id="username" class="form-control" value="#{userRegistrationBean.registrationForm.username}" required="true" requiredMessage="Username is required" autocomplete="off">
-			                <f:validator validatorId="usernameValidator" />
-			            </h:inputText>
-			    
-                        <div class="text-left" style="color:red;">
-	                        <h:message for="username" id="errUsername"/>
-	                    </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <h:inputSecret id="password" class="form-control" value="#{userRegistrationBean.registrationForm.password}" required="true" requiredMessage="Password is required" autocomplete="off"/>
-                        <div class="text-left" style="color:red;">
-                            <h:message for="password" id="errPassword"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password:</label>
-                        <h:inputSecret id="confirmPassword" class="form-control" value="#{userRegistrationBean.registrationForm.confirmPassword}" required="true" requiredMessage="Password is required" autocomplete="off" />
-                        <div class="text-left" style="color:red;">
-                            <h:message for="confirmPassword" id="errConfirmPassword"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="firstName">First Name:</label>
-                        <h:inputText id="firstName" class="form-control" value="#{userRegistrationBean.registrationForm.firstName}" required="true" requiredMessage="First name is required" autocomplete="off" />
-                        <div class="text-left" style="color:red;">
-                            <h:message for="firstName" id="errFirstName"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name:</label>
-                        <h:inputText id="lastName" class="form-control" value="#{userRegistrationBean.registrationForm.lastName}" autocomplete="off" />
-                    </div>
-                  
-                  	 <div class="alert #{not empty userRegistrationBean.response.message ? userRegistrationBean.response.result ? 'alert-success' : 'alert-danger' : '' }" role="alert" rendered="#{not empty userRegistrationBean.response.message}">
-        		        #{userRegistrationBean.response.message}
-        		    </div>
+                <h:form id="userForm">
+                	<p:growl id="userMessages" showDetail="true" />
+                    <h:inputHidden id="id" value="#{userAdministrationBean.userForm.id}" />
+					<div class="form-group">
+						<label for="name">Name:</label>
+						<h:inputText id="name" class="form-control" value="#{userAdministrationBean.userForm.username}" required="true" requiredMessage="Name is required" autocomplete="off" />
+						<div class="text-left" style="color: red;">
+							<h:message for="name" id="errUsername" />
+						</div>
+					</div>
+								
+					<div class="form-group">
+		                <label for="password">Password:</label>
+		                <h:inputSecret id="password" class="form-control" value="#{userAdministrationBean.userForm.password}" required="true" requiredMessage="Password is required" autocomplete="off"/>
+		                <div class="text-left" style="color:red;">
+		                    <h:message for="password" id="errPassword"/>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <label for="confirmPassword">Confirm Password:</label>
+		                <h:inputSecret id="confirmPassword" class="form-control" value="#{userAdministrationBean.userForm.confirmPassword}" required="true" requiredMessage="Password is required" autocomplete="off" />
+		                <div class="text-left" style="color:red;">
+		                    <h:message for="confirmPassword" id="errConfirmPassword"/>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <label for="firstName">First Name:</label>
+		                <h:inputText id="firstName" class="form-control" value="#{userAdministrationBean.userForm.firstName}" required="true" requiredMessage="First name is required" autocomplete="off" />
+		                <div class="text-left" style="color:red;">
+		                    <h:message for="firstName" id="errFirstName"/>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <label for="lastName">Last Name:</label>
+		                <h:inputText id="lastName" class="form-control" value="#{userAdministrationBean.userForm.lastName}" autocomplete="off" />
+		            </div>
     
-                    
-                    <h:commandButton action = "#{userRegistrationBean.register}" class="btn btn-primary btn-block" value="Register" id="register" immediate="true"/>
+                    <p:commandButton id="saveButton" value="Register" action="#{userAdministrationBean.saveUser(true)}" styleClass="mr-2" oncomplete="handleSaveUserEvent(xhr, status, args)" update=":userForm:userMessages"  />
                 </h:form>
             </div>
         </div>
     </div>
-    </div>
+    </div><script>
+		function handleSaveUserEvent(xhr, status, args) {
+			console.log(args);
+			console.log(status);
+	        if (!args.validationFailed) {
+	        }
+	    }
+    </script>
 </h:body>
 
 </html>

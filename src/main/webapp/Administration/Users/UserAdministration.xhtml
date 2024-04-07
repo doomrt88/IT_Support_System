@@ -81,7 +81,7 @@
             </div>
             
 			<p:commandButton id="saveButton" value="Save"
-				action="#{userAdministrationBean.saveUser}" styleClass="mr-2"
+				action="#{userAdministrationBean.saveUser(false)}" styleClass="mr-2"
 				oncomplete="handleSaveUserEvent(xhr, status, args)"  update=":userListForm:usersTable :userListForm:userMessages" />
 			<p:commandButton type="button" value="Cancel"
 				onclick="PF('userDialog').hide()" styleClass="ui-button-warning" />

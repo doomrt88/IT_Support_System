@@ -159,7 +159,13 @@ public class RoleAdministration implements Serializable {
             errMsg = message.getDetail();
     	}
     	
-    	return errMsg.isEmpty();
+    	boolean isValid = errMsg.isEmpty();
+    	
+    	if(!isValid) {
+    		FacesContext.getCurrentInstance().validationFailed();
+    	}
+    	
+    	return isValid;
     	
     }
     
