@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import utility.DbUtils;
 
@@ -55,6 +56,46 @@ public abstract class BaseRepository<T> {
 		return entities;
 	}
 
+	public List<T> getAllOrderedBy(Map<String, String> orderByColumns) {
+	    List<T> entities = new ArrayList<>();
+	    StringBuilder orderByClause = new StringBuilder("ORDER BY ");
+	    boolean firstColumn = true;
+
+	    for (Map.Entry<String, String> entry : orderByColumns.entrySet()) {
+	        if (!firstColumn) {
+	            orderByClause.append(", ");
+	        }
+	        orderByClause.append(entry.getKey()).append(" ").append(entry.getValue());
+	        firstColumn = false;
+	    }
+
+	    String sql = "SELECT * FROM " + getTableName() + " " + orderByClause.toString();
+	    Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+	    try {
+			connection = DbContext.getInstance().getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+	            entities.add(mapResultSetToEntity(resultSet));
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				DbContext.getInstance().releaseConnection(connection);
+			}
+
+			DbUtils.closeResultSet(resultSet);
+			DbUtils.closePreparedStatement(preparedStatement);
+		}
+		return null;
+	}
+
+	
 	public T getById(int id) {
 		String sql = "SELECT * FROM " + getTableName() + " WHERE " + getIdColumnName() + " = ?";
 		Connection connection = null;

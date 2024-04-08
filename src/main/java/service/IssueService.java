@@ -1,33 +1,57 @@
 package service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import models.Enums.States;
 import models.dao.CommentRepository;
-import models.dao.IssueRepository;
+import models.dao.IssueBoardRepository;
 import models.entity.Comment;
-import models.entity.Issue;
+import models.entity.IssueBoard;
 
 public class IssueService{
-	private IssueRepository issueRepository;
+	private IssueBoardRepository issueBoardRepository;
 	private CommentRepository commentRepository;
 	
 	public IssueService() {
-        this.issueRepository = new IssueRepository();
+        this.issueBoardRepository = new IssueBoardRepository();
         this.commentRepository = new CommentRepository();
     }
 	
 	// Issues
-	public boolean createIssue(Issue issue) {
+	public boolean createIssue(IssueBoard issue) {
         // we can add more business rules here such as any validations. Front end validations should be done in the bean or controller
-        return issueRepository.insert(issue);
+        return issueBoardRepository.insert(issue);
     }
 
-    public boolean updateIssue(Issue issue) {
+    public boolean updateIssue(IssueBoard issue) {
         // we can add more business rules here such as any validations
-    	return issueRepository.update(issue);
+    	return issueBoardRepository.update(issue);
     }
 
     public boolean deleteIssue(int issueId) {
         // we can add more business rules here such as any validations
-        return issueRepository.delete(issueId);
+        return issueBoardRepository.delete(issueId);
+    }
+    
+    public List<IssueBoard> getAllIssues() {
+    	Map<String, String> orderByColumns = new HashMap<>();
+    	orderByColumns.put("issue_id", "ASC");
+    	
+        return issueBoardRepository.getAllOrderedBy(orderByColumns);
+    }
+    
+    public List<IssueBoard> getAssignedIssues_ByUserStatus(int userId, States open) {
+        return issueBoardRepository.getAssignedIssues_ByUserStatus(userId, open);
+    }
+    
+    public List<IssueBoard> getIssues_ByStatus(States open) {
+        return issueBoardRepository.getIssues_ByStatus(open);
+    }
+    
+    public List<IssueBoard> getSubmittedIssues_ByUser(int userId) {
+        return issueBoardRepository.getSubmittedIssues_ByUser(userId);
     }
     
     // Comments

@@ -24,7 +24,7 @@
 				<p:column headerText="First Name">#{user.firstName}</p:column>
 				<p:column headerText="Last Name">#{user.lastName}</p:column>
 				
-				<p:column headerText="">
+				<p:column headerText="" styleClass="text-center">
 					<p:commandButton 
 						action="#{userAdministrationBean.editUser(user)}"  icon="pi pi-pencil"
 						oncomplete="PF('userDialog').show()" update="userDialog"

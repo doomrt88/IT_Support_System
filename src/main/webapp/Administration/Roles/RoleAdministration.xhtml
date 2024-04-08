@@ -25,7 +25,7 @@
 				<p:column headerText="Name">#{role.name}</p:column>
 				<p:column headerText="Description">#{role.description}</p:column>
 				
-				<p:column headerText="">
+				<p:column headerText="" styleClass="text-center">
 					<p:commandButton 
 						action="#{roleAdministrationBean.editRole(role)}"  icon="pi pi-pencil"
 						oncomplete="PF('roleDialog').show()" update="roleDialog"

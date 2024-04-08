@@ -59,3 +59,16 @@ body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon{
 .breadcrumb .breadcrumb-item a{
 	color: #6c757d;
 }
+
+.p-priority-high {
+    background-color: red;
+    color: white;
+}
+.p-priority-medium {
+    background-color: orange;
+    color: white;
+}
+.p-priority-low {
+    background-color: green;
+    color: white;
+}

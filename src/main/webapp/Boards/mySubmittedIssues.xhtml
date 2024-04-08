@@ -4,37 +4,28 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head></h:head>
 <body>
 	<div class="container">
-		<h2>My Submitted Issues</h2>
-		
-		<div class="table-responsive">
-			<table class="table striped  table-sm">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Title</th>
-						<th>Description</th>
-						<th>Created</th>
-						<th>Due Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<ui:repeat value="#{issueBean.getSubmittedIssues_ByUser()}" var="c">
-						<tr>
-							<td>#{c.issueID}</td>
-							<td>#{c.title}</td>
-							<td>#{c.description}</td>
-							<td>#{c.createdAt}</td>
-							<td>#{c.dueDate}</td>
-						</tr>
-					</ui:repeat>
-				</tbody>
-			</table>
-		</div>
+		<h3>My Submitted Issues</h3>
+		<h:form id="mySubmittedIssuesForm">	        
+			<p:dataTable id="mySubmittedIssuesTable"
+				value="#{issueBean.getSubmittedIssues_ByUser()}" var="c"
+				styleClass="table striped table-sm mt-2" paginator="true" rows="5"  paginatorPosition="bottom">
+				<p:column headerText="Issue #">#{c.issueID}</p:column>
+				<p:column headerText="Title">#{c.title}</p:column>
+				<p:column headerText="Description">#{c.description}</p:column>
+				<p:column headerText="Priority">
+				    <p:badge value="P#{c.priority}" severity="#{c.priority eq '1' ? 'danger' : (c.priority eq '2' ? 'warning' : 'info')}" />
+				</p:column>
+				<p:column headerText="Date Created">#{c.createdAt}</p:column>
+				<p:column headerText="Start Date">#{c.startDate}</p:column>
+				<p:column headerText="Due Date">#{c.dueDate}</p:column>				
+			</p:dataTable>
+		</h:form>
 	</div>
 </body>
 </html>

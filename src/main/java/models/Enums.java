@@ -1,12 +1,12 @@
 package models;
 public class Enums {
 
-	public enum Status {
+	public enum States {
         OPEN("Open"), IN_PROGRESS("In Progress"), RESOLVED("Resolved"), CLOSED("Closed");
 
         private final String status;
 
-        Status(String status) {
+        States(String status) {
             this.status = status;
         }
 
