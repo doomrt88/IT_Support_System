@@ -55,7 +55,8 @@
 		                <h:inputText id="lastName" class="form-control" value="#{userAdministrationBean.userForm.lastName}" autocomplete="off" />
 		            </div>
     
-                    <p:commandButton id="saveButton" value="Register" action="#{userAdministrationBean.saveUser(true)}" styleClass="mr-2" oncomplete="handleSaveUserEvent(xhr, status, args)" update=":userForm:userMessages"  />
+    				<a href="/Login.xhtml" class="float-right mr-3 mt-2">Back to Login</a>
+                    <p:commandButton id="saveButton" value="Register" action="#{userAdministrationBean.saveUser(true)}" styleClass="mr-2" oncomplete="handleSaveUserEvent(xhr, status, args)" update=":userForm :userForm:userMessages"  />
                 </h:form>
             </div>
         </div>

@@ -5,32 +5,41 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<div class="container">
-		<h2>Role Management</h2>
-
-		<p:commandButton value="Create Role"
-			action="#{roleAdministrationBean.createRole}" update="roleForm"
-			onclick="PF('roleDialog').show()" styleClass="mb-3"/>
+		<h3 class="mb-4">Role Management</h3>
 		<h:form id="roleListForm">
 			<p:growl id="roleMessages" showDetail="true" />
+			<p:toolbar>
+	            <p:toolbarGroup>
+	                <p:commandButton value="New Role" icon="pi pi-plus" actionListener="#{roleAdministrationBean.openNew}"
+	                    update=":roleForm" oncomplete="PF('roleDialog').show()"
+	                    styleClass="ui-button-success" style="margin-right: .5rem">
+	                    <p:resetInput target=":roleForm" />
+	                </p:commandButton>
+	            </p:toolbarGroup>
+	        </p:toolbar>
+	        
+	        
 			<p:dataTable id="rolesTable"
 				value="#{roleAdministrationBean.roleList}" var="role"
-				styleClass="table striped table-sm" paginator="true" rows="5"  paginatorPosition="bottom">
+				styleClass="table striped table-sm mt-2" paginator="true" rows="5"  paginatorPosition="bottom">
 				<p:column headerText="Name">#{role.name}</p:column>
 				<p:column headerText="Description">#{role.description}</p:column>
-				<p:column headerText="Action">
-					<p:commandButton value="Edit"
-						action="#{roleAdministrationBean.editRole(role)}" 
+				
+				<p:column headerText="">
+					<p:commandButton 
+						action="#{roleAdministrationBean.editRole(role)}"  icon="pi pi-pencil"
 						oncomplete="PF('roleDialog').show()" update="roleDialog"
-						styleClass="ui-button-outlined mr-2" />
+						styleClass="edit-button rounded-button ui-button-success mr-1" />
 
-					<p:commandButton value="Delete"
-						action="#{roleAdministrationBean.deleteRole(role.id)}"
+					<p:commandButton 
+						action="#{roleAdministrationBean.deleteRole(role.id)}" icon="pi pi-trash"
 						onclick="return confirm('Are you sure you want to delete role #{role.name}?')"
 						update=":roleListForm:rolesTable :roleListForm:roleMessages"
-						styleClass="ui-button-outlined ui-button-danger">
+						styleClass="ui-button-danger rounded-button">
 						<f:ajax execute="@this" render="@form" />
 					</p:commandButton>
-				</p:column>
+				</p:column>		
+				
 			</p:dataTable>
 		</h:form>
 	</div>
@@ -69,10 +78,10 @@
 			</div>
 
 			<p:commandButton id="saveButton" value="Save"
-				action="#{roleAdministrationBean.saveRole}" styleClass="mr-2"
+				action="#{roleAdministrationBean.saveRole}" styleClass="mr-2" icon="pi pi-check"
 				oncomplete="handleSaveRoleEvent(xhr, status, args)"  update=":roleListForm:rolesTable :roleListForm:roleMessages" />
-			<p:commandButton type="button" value="Cancel"
-				onclick="PF('roleDialog').hide()" styleClass="ui-button-warning" />
+			<p:commandButton type="button" value="Cancel"  icon="pi pi-times"
+				onclick="PF('roleDialog').hide()" styleClass="ui-button-secondary" />
 		</h:form>
 		
 		<f:facet name="header">

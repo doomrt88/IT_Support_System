@@ -48,3 +48,14 @@ input[type=checkbox]{
 body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon{
 	    margin-top: -0.7rem !important;
 }
+
+.breadcrumb-item+.breadcrumb-item::before {
+    display: inline-block;
+    padding-right: .5rem;
+    color: #6c757d;
+    content: ">";
+}
+
+.breadcrumb .breadcrumb-item a{
+	color: #6c757d;
+}

@@ -5,33 +5,39 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<div class="container">
-		<h2>User Management</h2>
-
-		<p:commandButton value="Create User"
-			action="#{userAdministrationBean.createUser}" update="userForm"
-			onclick="PF('userDialog').show()" styleClass="mb-3"/>
+		<h3 class="mb-4">User Management</h3>
 		<h:form id="userListForm">
 			<p:growl id="userMessages" showDetail="true" />
+			<p:toolbar>
+	            <p:toolbarGroup>
+	                <p:commandButton value="New User" icon="pi pi-plus" actionListener="#{userAdministrationBean.openNew}"
+	                    update=":userForm" oncomplete="PF('userDialog').show()"
+	                    styleClass="ui-button-success" style="margin-right: .5rem">
+	                    <p:resetInput target=":userForm" />
+	                </p:commandButton>
+	            </p:toolbarGroup>
+	        </p:toolbar>
 			<p:dataTable id="usersTable"
 				value="#{userAdministrationBean.userList}" var="user"
-				styleClass="table striped table-sm" paginator="true" rows="5"  paginatorPosition="bottom">
+				styleClass="table striped table-sm mt-2" paginator="true" rows="5"  paginatorPosition="bottom">
 				<p:column headerText="Name">#{user.username}</p:column>
 				<p:column headerText="First Name">#{user.firstName}</p:column>
 				<p:column headerText="Last Name">#{user.lastName}</p:column>
-				<p:column headerText="Action">
-					<p:commandButton value="Edit"
-						action="#{userAdministrationBean.editUser(user)}" 
+				
+				<p:column headerText="">
+					<p:commandButton 
+						action="#{userAdministrationBean.editUser(user)}"  icon="pi pi-pencil"
 						oncomplete="PF('userDialog').show()" update="userDialog"
-						styleClass="ui-button-outlined mr-2" />
-						
-					<p:commandButton value="Delete"
-						action="#{userAdministrationBean.deleteUser(user.id)}"
+						styleClass="edit-button rounded-button ui-button-success mr-1" />
+
+					<p:commandButton 
+						action="#{userAdministrationBean.deleteUser(user.id)}" icon="pi pi-trash"
 						onclick="return confirm('Are you sure you want to delete user #{user.username}?')"
 						update=":userListForm:usersTable :userListForm:userMessages"
-						styleClass="ui-button-outlined ui-button-danger">
+						styleClass="ui-button-danger rounded-button">
 						<f:ajax execute="@this" render="@form" />
 					</p:commandButton>
-				</p:column>
+				</p:column>	
 			</p:dataTable>
 		</h:form>
 	</div>

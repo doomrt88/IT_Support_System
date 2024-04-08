@@ -60,6 +60,9 @@ public class RoleAdministration implements Serializable {
         this.permissions = permissions;
     }
        
+    public void openNew() {
+        this.roleForm = new RoleFormDTO();
+    }
    
     public List<RoleFormDTO> getRoleList() {
     	return roleService.getAllRolesWithPermissions();

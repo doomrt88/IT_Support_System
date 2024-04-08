@@ -42,6 +42,10 @@ public class ProjectAdministration implements Serializable {
         
     }
 
+    public void openNew() {
+        this.projectForm = new ProjectDTO();
+    }
+    
     public ProjectDTO getProjectForm() {
         return projectForm;
     }

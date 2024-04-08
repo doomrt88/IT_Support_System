@@ -10,8 +10,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import models.entity.Role;
 import models.entity.User;
-import models.dto.BaseResponse;
-import models.dto.RegistrationFormDTO;
 import models.dto.UserDTO;
 import service.RoleService;
 import service.UserService;
@@ -29,12 +27,10 @@ public class UserAdministration implements Serializable {
 
     private List<Role> roles;
     private UserDTO userForm;
-    private BaseResponse response;
 
     @PostConstruct
     public void initialize() {
     	userForm = new UserDTO();
-        response = new BaseResponse();
         
         userService = new UserService();
         roleService = new RoleService();
@@ -42,6 +38,10 @@ public class UserAdministration implements Serializable {
         roles = roleService.getAllRoles();
     }
 
+    public void openNew() {
+        this.userForm = new UserDTO();
+    }
+    
     public void editUser(UserDTO user) {
 		
     	this.userForm.setId(user.getId());
@@ -81,12 +81,9 @@ public class UserAdministration implements Serializable {
 
         boolean success = userService.deleteUser(id);
         if (success) {
-        	response.setResult(success);
-            response.setMessage("User has been deleted");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been deleted"));
             clearForm();
         } else {
-        	response.setMessage("User deletion failed. Please try again.");
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User deletion failed. Please try again."));
         }
         
@@ -101,13 +98,9 @@ public class UserAdministration implements Serializable {
         int roleId = isRegistration ? Config.getDefaultRoleId() : userForm.getRoleId();
         boolean success = userService.registerUser(userForm.getUsername(), userForm.getPassword(), userForm.getFirstName(), userForm.getLastName(), roleId);
         if (success) {
-        	response.setResult(success);
-            response.setMessage("User has been added");
             
             if(isRegistration) {
-            	response.setResult(success);
             	String msg = "Registration successful! Welcome, " + userForm.getFirstName() + " " + userForm.getLastName() + "!";
-                response.setMessage(msg);
             	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
             }else{
             	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been added"));
@@ -116,7 +109,6 @@ public class UserAdministration implements Serializable {
             
             clearForm();
         } else {
-        	response.setMessage("User creation failed. Please try again.");
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User"));
         }
     }
@@ -136,12 +128,9 @@ public class UserAdministration implements Serializable {
 
         boolean success = userService.updateUser(userToUpdate);
         if (success) {
-            response.setResult(success);
-            response.setMessage("User has been updated");
             clearForm();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been updated"));
         } else {
-            response.setMessage("User update failed. Please try again.");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User update failed. Please try again."));
         }
         
@@ -195,12 +184,12 @@ public class UserAdministration implements Serializable {
     
     private void clearForm() {
     	UserDTO user = new UserDTO();
-    	user.setId(user.getId());
-    	user.setUsername(user.getUsername());
-    	user.setPassword(user.getPassword());
-    	user.setFirstName(user.getFirstName());
-    	user.setLastName(user.getLastName());
-    	user.setRoleId(user.getRoleId());
+    	this.userForm.setId(user.getId());
+    	this.userForm.setUsername(user.getUsername());
+    	this.userForm.setPassword(user.getPassword());
+    	this.userForm.setFirstName(user.getFirstName());
+    	this.userForm.setLastName(user.getLastName());
+    	this.userForm.setRoleId(user.getRoleId());
     }
     
 }
