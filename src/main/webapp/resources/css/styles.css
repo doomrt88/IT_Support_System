@@ -1,31 +1,31 @@
 @charset "ISO-8859-1";
 
 .nav-pills .nav-link.active, .nav-pills .navbar-dark, .bg-dark {
-	background-color: #416285 !important;
+	background-color: #1e5a7b !important;
 	color: #fff !important
 }
 
 .nav-pills .nav-link{
-	color: #416285 !important;
+	color: #1e5a7b !important;
 }
 
 .border-primary {
-	border-color: #416285 !important;
+	border-color: #1e5a7b !important;
 }
 
 .btn-primary {
-	background-color: #416285 !important;
+	background-color: #1e5a7b !important;
 	color: #fff !important;
-	border-color: #416285 !important;
+	border-color: #1e5a7b !important;
 }
 
 .btn-outline-primary {
-    color: #416285 !important;
-    border-color: #416285 !important;
+    color: #1e5a7b !important;
+    border-color: #1e5a7b !important;
 }
 
 .btn-outline-primary:hover{
-	background-color: #416285;
+	background-color: #1e5a7b;
 	color: #fff !important;
 }
 
@@ -71,4 +71,24 @@ body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon{
 .p-priority-low {
     background-color: green;
     color: white;
+}
+
+.login-img {
+    position: relative;
+    display: inline-block;
+}
+
+.login-img img{
+	width: 100%;
+}
+
+.login-text {
+position: absolute;
+    bottom: 10px;
+    right: 10%;
+    color: #41b7cf;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    padding: 5px 10px;
+    font-size: 15px;
+    font-weight: bolder;
 }
