@@ -24,7 +24,7 @@ public class LoginBean {
                 if(userService.authenticateUser(username, password)) {
                     message = new FacesMessage("Welcome " + username);
                     ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-                    externalContext.redirect(externalContext.getRequestContextPath() + "/Home.xhtml");
+                    externalContext.redirect(externalContext.getRequestContextPath() + "/Boards/Boards.xhtml");
                     
                 }else {
                     message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Your username or password are invalid");
