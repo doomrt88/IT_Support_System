@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.dao.IssueBoardRepository;
 import models.dao.ProjectRepository;
 import models.entity.Project;
 import models.entity.User;
@@ -13,10 +14,13 @@ import models.dto.UserDTO;
 
 public class ProjectService{
 	private ProjectRepository projectRepository;
+	private IssueBoardRepository issueRepository;
 	
 	public ProjectService() {
         this.projectRepository = new ProjectRepository();
+        this.issueRepository = new IssueBoardRepository();
     }
+	
 	
 	
 	public boolean createProject(Project project) {
@@ -63,4 +67,8 @@ public class ProjectService{
         
         return projectDTO;
     }
+    
+    public boolean isAllowDelete(int id) {
+    	return issueRepository.getByProjectId(id) == null;
+	}
 }

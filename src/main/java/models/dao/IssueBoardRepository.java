@@ -2,6 +2,7 @@ package models.dao;
 
 import models.Enums.States;
 import models.entity.IssueBoard;
+import models.entity.UserRole;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -169,6 +170,52 @@ public class IssueBoardRepository extends BaseRepository<IssueBoard> {
         }
         
         return list;
+    }
+    
+    public IssueBoard getByAssignedId(int userId) {
+        String sql = "SELECT * FROM issues WHERE assigned_to= ? ORDER BY assigned_to LIMIT 1";
+        Connection connection = null;
+        try {
+        	connection = DbContext.getInstance().getConnection();
+        	PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToEntity(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if (connection != null) {
+                DbContext.getInstance().releaseConnection(connection);
+            }
+        }
+        
+        return null;
+    }
+    
+    public IssueBoard getByProjectId(int projectId) {
+        String sql = "SELECT * FROM issues WHERE project_id= ? ORDER BY project_id LIMIT 1";
+        Connection connection = null;
+        try {
+        	connection = DbContext.getInstance().getConnection();
+        	PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, projectId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToEntity(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if (connection != null) {
+                DbContext.getInstance().releaseConnection(connection);
+            }
+        }
+        
+        return null;
     }
     
 //    public List<IssueBoard> getAll() {

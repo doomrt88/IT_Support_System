@@ -89,4 +89,27 @@ public class UserRoleRepository extends BaseRepository<UserRole> {
         
         return null;
     }
+    
+    public UserRole getByRoleId(int roleId) {
+        String sql = "SELECT * FROM user_roles WHERE role_id= ? ORDER BY user_id LIMIT 1";
+        Connection connection = null;
+        try {
+        	connection = DbContext.getInstance().getConnection();
+        	PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, roleId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToEntity(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if (connection != null) {
+                DbContext.getInstance().releaseConnection(connection);
+            }
+        }
+        
+        return null;
+    }
 }

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.mindrot.jbcrypt.BCrypt;
 
 import models.dao.DbContext;
+import models.dao.IssueBoardRepository;
 import models.dao.UserRepository;
 import models.dao.UserRoleRepository;
 
@@ -26,9 +27,11 @@ public class UserService {
 
 	private UserRepository userRepository;
 	private UserRoleRepository userRoleRepository;
+	private IssueBoardRepository issueRepository;
 	public UserService() {
         this.userRepository = new UserRepository();
         this.userRoleRepository = new UserRoleRepository();
+        this.issueRepository = new IssueBoardRepository();
     }
 	
 	public boolean createUser(User user) {
@@ -269,4 +272,8 @@ public class UserService {
         
         return userDTO;
     }
+	
+	public boolean isAllowDelete(int userId) {
+    	return issueRepository.getByAssignedId(userId) == null;
+	}
 }

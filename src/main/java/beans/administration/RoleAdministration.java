@@ -14,6 +14,7 @@ import javax.inject.Named;
 
 import models.dto.GroupedPermission;
 import models.dto.RoleFormDTO;
+import service.IssueService;
 import service.RoleService;
 
 import org.primefaces.PrimeFaces;
@@ -35,6 +36,7 @@ public class RoleAdministration implements Serializable {
     public void initialize() {
     	roleForm = new RoleFormDTO();
         
+
         roleService = new RoleService();
         permissions = new ArrayList<>();
         
@@ -139,14 +141,19 @@ public class RoleAdministration implements Serializable {
     
     public void deleteRole(int id) {
 
-        boolean success = roleService.deleteRole(id);
-        if (success) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role has been deleted"));
-            clearForm();
-        } else {
-        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role deletion failed. Please try again."));
-        }
-        
+    	// check if role has users, do not delete
+    	if(roleService.isAllowDelete(id)) {
+	        boolean success = roleService.deleteRole(id);
+	        if (success) {
+	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role has been deleted"));
+	            clearForm();
+	        } else {
+	        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role deletion failed. Please try again."));
+	        }
+    	}else {
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Delete is not allowed."));
+    	}
+    	
         PrimeFaces.current().ajax().update("form:roleMessages", "form:rolesTable");
     }
 

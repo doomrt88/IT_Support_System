@@ -12,9 +12,12 @@ import models.dao.DbContext;
 import models.dao.PermissionRepository;
 import models.dao.RolePermissionRepository;
 import models.dao.RoleRepository;
+import models.dao.UserRepository;
+import models.dao.UserRoleRepository;
 import models.entity.Permission;
 import models.entity.Role;
 import models.entity.RolePermission;
+import models.entity.UserRole;
 import models.dto.GroupedPermission;
 import models.dto.RoleFormDTO;
 
@@ -22,11 +25,13 @@ public class RoleService{
 	private RoleRepository roleRepository;
 	private PermissionRepository permissionRepository;
 	private RolePermissionRepository rolePermissionRepository;
+	private UserRoleRepository userRoleRepository;
 	
 	public RoleService() {
         this.roleRepository = new RoleRepository();
         this.permissionRepository = new PermissionRepository();
         this.rolePermissionRepository = new RolePermissionRepository();
+        this.userRoleRepository = new UserRoleRepository();
     }
 	
 	
@@ -126,6 +131,10 @@ public class RoleService{
 	}
 
 
+	public boolean isAllowDelete(int roleId) {
+    	return userRoleRepository.getByRoleId(roleId) == null;
+	}
+	
     public boolean deleteRole(int roleId) {
         // we can add more business rules here such as any validations
     	DbContext dbContext = DbContext.getInstance();

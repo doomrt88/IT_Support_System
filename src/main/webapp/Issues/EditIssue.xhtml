@@ -114,7 +114,7 @@
 
             <p:commandButton id="saveButton" value="Save"
 			    action="#{issueBean.saveIssue}" styleClass="mr-2" icon="pi pi-check" update=":allOpenIssuesForm:allOpenIssuesTable :myOpenIssuesForm:myOpenIssuesTable editIssueDialogMessages"
-			    oncomplete="handleSaveComplete(xhr, status, args)" />
+			    oncomplete="handleEditSaveComplete(xhr, status, args)" />
             <p:commandButton type="button" value="Cancel"  icon="pi pi-times"
                 onclick="PF('editIssueDialog').hide()" styleClass="ui-button-secondary" />
         </h:form>
@@ -124,7 +124,7 @@
     </p:dialog>
     
     <script>
-    function handleSaveComplete(xhr, status, args) {
+    function handleEditSaveComplete(xhr, status, args) {
         console.log(args);
         if (!args.validationFailed) {
         	PF('editIssueDialog').hide();

@@ -79,14 +79,18 @@ public class UserAdministration implements Serializable {
     
     public void deleteUser(int id) {
 
-        boolean success = userService.deleteUser(id);
-        if (success) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been deleted"));
-            clearForm();
-        } else {
-        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User deletion failed. Please try again."));
-        }
-        
+    	if(userService.isAllowDelete(id)) {
+	        boolean success = userService.deleteUser(id);
+	        if (success) {
+	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been deleted"));
+	            clearForm();
+	        } else {
+	        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User deletion failed. Please try again."));
+	        }
+    	}else {
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Delete is not allowed."));
+    	}
+    	
         PrimeFaces.current().ajax().update("form:userMessages", "form:usersTable");
     }
     

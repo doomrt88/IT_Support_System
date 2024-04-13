@@ -76,16 +76,20 @@ public class ProjectAdministration implements Serializable {
     
     public void deleteProject(int id) {
 
-        boolean success = projectService.deleteProject(id);
-        if (success) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Project has been deleted"));
-            clearForm();
-        } else {
-        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Project deletion failed. Please try again."));
-        }
-        
-        PrimeFaces.current().ajax().update("form:projectMessages", "form:projectsTable");
-    }
+    	if(projectService.isAllowDelete(id)) {
+    		boolean success = projectService.deleteProject(id);
+	            if (success) {
+	                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Project has been deleted"));
+	                clearForm();
+	            } else {
+	            	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Project deletion failed. Please try again."));
+	            }
+    	}else {
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Delete is not allowed."));
+    	}
+    	
+    		PrimeFaces.current().ajax().update("form:projectMessages", "form:projectsTable");
+	    }
     
 	public void createProject() {
 		  if (!validate()) {
