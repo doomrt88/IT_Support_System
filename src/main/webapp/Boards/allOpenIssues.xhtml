@@ -9,21 +9,29 @@
 
 <h:head></h:head>
 <body>
-	<div class="container">
+	<div class="">
 		<h3>All Open Issues</h3>
 		<h:form id="allOpenIssuesForm">	        
 			<p:dataTable id="allOpenIssuesTable"
 				value="#{issueBean.getIssues_ByStatusOpen()}" var="c"
 				styleClass="table striped table-sm mt-2" paginator="true" rows="5"  paginatorPosition="bottom">
 				<p:column headerText="Issue #">#{c.issueID}</p:column>
+				<p:column headerText="Type">#{c.issueType}</p:column>
 				<p:column headerText="Title">#{c.title}</p:column>
 				<p:column headerText="Description">#{c.description}</p:column>
+				<p:column headerText="Status">#{c.status}</p:column>
 				<p:column headerText="Priority">
 				    <p:badge value="P#{c.priority}" severity="#{c.priority eq '1' ? 'danger' : (c.priority eq '2' ? 'warning' : 'info')}" />
 				</p:column>
-				<p:column headerText="Date Created">#{c.createdAt}</p:column>
+				<p:column headerText="Date Reported">#{c.createdAt}</p:column>
 				<p:column headerText="Start Date">#{c.startDate}</p:column>
-				<p:column headerText="Due Date">#{c.dueDate}</p:column>				
+				<p:column headerText="Due Date">#{c.dueDate}</p:column>		
+				<p:column headerText="" styleClass="text-center">
+					<p:commandButton 
+						action="#{issueBean.editIssue(c)}"  icon="pi pi-pencil"
+						oncomplete="PF('editIssueDialog').show()" update="editIssueDialog"
+						styleClass="edit-button rounded-button ui-button-success mr-1" />
+				</p:column>			
 			</p:dataTable>
 		</h:form>
 	</div>

@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    
+
+    <p:dialog id="issueDialog" widgetVar="issueDialog" modal="true" minHeight="100" width="800" 
+        resizable="false" showEffect="fade" hideEffect="fade">
+        <h:form id="issueForm">
+        	<p:growl id="issueDialogMessages" showDetail="true" sticky="false" life="1000" />
+            <h:inputHidden id="id" value="#{issueBean.issueForm.id}" />
+			<div class="row">
+				
+				<div class="form-group col-md-6">
+	                <label for="projectId">Project:</label>
+	                <h:selectOneMenu id="projectId" class="form-control" value="#{issueBean.issueForm.projectId}">
+	                    <f:selectItems value="#{projectAdministrationBean.projectList}" var="project" itemLabel="#{project.name}" itemValue="#{project.id}" />
+	                </h:selectOneMenu>
+	            </div>
+	            
+				<div class="form-group col-md-6">
+				    <label for="issueType">Issue Type:</label>
+				    <p:selectOneMenu id="issueType" class="form-control" value="#{issueBean.issueForm.issueType}" 
+				        required="true" requiredMessage="Issue Type is required">
+				        <f:selectItem itemLabel="Bug" itemValue="Bug" />
+				        <f:selectItem itemLabel="Feature Request" itemValue="Feature Request" />
+				        <f:selectItem itemLabel="Task" itemValue="Task" />
+				    </p:selectOneMenu>
+				    <div class="text-left" style="color: red;">
+				        <h:message for="issueType" id="errIssueType" />
+				    </div>
+				</div>
+
+				
+				<div class="form-group col-md-6">
+	                <label for="title">Summary:</label>
+	                <h:inputText id="title" class="form-control"
+	                    value="#{issueBean.issueForm.title}" required="true"
+	                    requiredMessage="Title is required" autocomplete="off" />
+	                <div class="text-left" style="color: red;">
+	                    <h:message for="title" id="errIssueTitle" />
+	                </div>
+	            </div>
+	
+	            <div class="form-group col-md-6">
+				    <label for="priority">Priority:</label>
+				    <p:selectOneMenu id="priority" class="form-control" value="#{issueBean.issueForm.priority}" 
+				        required="true" requiredMessage="Priority is required">
+				        <f:selectItem itemLabel="P1" itemValue="1" />
+				        <f:selectItem itemLabel="P2" itemValue="2" />
+				        <f:selectItem itemLabel="P3" itemValue="3" />
+				        <f:selectItem itemLabel="P4" itemValue="4" />
+				        <f:selectItem itemLabel="P5" itemValue="5" />
+				    </p:selectOneMenu>
+				    <div class="text-left" style="color: red;">
+				        <h:message for="priority" id="errIssuePriority" />
+				    </div>
+				</div>
+	            
+	            <div class="form-group col-md-6">
+				    <label for="assignedTo" style="display:block;">Assigned To:</label>
+				    <h:selectOneMenu id="assignedTo" class="form-control" value="#{issueBean.issueForm.assignedTo}" required="true" requiredMessage="Assigned To is required">
+				        <f:selectItem itemLabel="-- Select User --" itemValue="" />
+				        <f:selectItems value="#{userAdministrationBean.userList}" var="user" itemLabel="#{user.username}" itemValue="#{user.id}" />
+				    </h:selectOneMenu>
+				    <div class="text-left" style="color: red;">
+				        <h:message for="assignedTo" id="errAssignedTo" />
+				    </div>
+				</div>
+					            
+	            <div class="form-group col-md-6">
+				    <label for="status">Status:</label>
+				    <h:selectOneMenu id="status" class="form-control" value="#{issueBean.issueForm.status}" 
+				        required="true" requiredMessage="Status is required">
+				        <f:selectItem itemLabel="Open" itemValue="Open"/>
+				    </h:selectOneMenu>
+				    <div class="text-left" style="color: red;">
+				        <h:message for="status" id="errIssueStatus" />
+				    </div>
+				</div>
+	
+	            
+	            <div class="form-group col-md-12">
+	                <label for="description">Description:</label>
+	                <h:inputTextarea id="description" class="form-control"
+	                    value="#{issueBean.issueForm.description}" required="true"
+	                    requiredMessage="Description is required" />
+	                <div class="text-left" style="color: red;">
+	                    <h:message for="description" id="errIssueDescription" />
+	                </div>
+	            </div>
+	
+	            <div class="form-group col-md-6">
+	                <label for="dueDate">Due Date:</label>
+	                <p:datePicker autocomplete="off" id="dueDate" value="#{issueBean.issueForm.dueDate}" widgetVar="endDateWidget"  required="true" requiredMessage="Due date is required" pattern="yyyy-MM-dd" showOn="button" mode="date"  showTime="false"  converter="localDateTimeConverter"/>
+	                <div class="text-left" style="color:red;">
+	                    <h:message for="dueDate" id="errIssueDueDate"/>
+	                </div>
+	            </div>
+					
+			</div>
+            
+
+            <p:commandButton id="saveButton" value="Save"
+			    action="#{issueBean.saveIssue}" styleClass="mr-2" icon="pi pi-check"   update="issueDialogMessages"
+			    oncomplete="handleSaveComplete(xhr, status, args)" />
+            <p:commandButton type="button" value="Cancel"  icon="pi pi-times"
+                onclick="PF('issueDialog').hide()" styleClass="ui-button-secondary" />
+        </h:form>
+        <f:facet name="header">
+	        <h:outputText value="#{issueBean.issueForm.id > 0 ? 'Update Issue' : 'Add New Issue'}" />
+	    </f:facet>
+    </p:dialog>
+    
+    <script>
+    function handleSaveComplete(xhr, status, args) {
+        console.log(args);
+        if (!args.validationFailed) {
+        	//PF('issueDialogMessages').show([{severity: 'info', summary: 'Success', detail: 'Issue saved successfully'}]);
+            setTimeout(function() {
+                window.location.reload();
+            }, 2000);
+        }
+    }
+</script>
+</ui:composition>

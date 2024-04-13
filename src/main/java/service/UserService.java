@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -245,6 +246,12 @@ public class UserService {
 	    }
     }
 	
+	public List<UserDTO> searchUser(String q) {
+        List<UserDTO> filteredUsers = getAllUsers().stream()
+                .filter(user -> user.getUsername().toLowerCase().contains(q.toLowerCase()))
+                .collect(Collectors.toList());
+		return filteredUsers;
+    }
 	
 	private String hashPassword(String password) {
 		return BCrypt.hashpw(password, BCrypt.gensalt(10));

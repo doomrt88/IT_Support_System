@@ -103,7 +103,7 @@ public class ProjectAdministration implements Serializable {
 		      clearForm();
 		      
 		      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Project has been added"));
-	          FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('projectDialog').hide()");
+	          //FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('projectDialog').hide()");
 	          
 		  } else {
 	      	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Project creation failed. Please try again."));
@@ -155,7 +155,7 @@ public class ProjectAdministration implements Serializable {
 	        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid dates", "Start date cannot be after end date.");
 	        FacesContext.getCurrentInstance().addMessage("projectForm:startDate", message);
 	        FacesContext.getCurrentInstance().addMessage("projectForm:endDate", message);
-	        FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('projectDialog').show()");
+	        //FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('projectDialog').show()");
 	        
 	        errMsg = message.getDetail();
 	    }

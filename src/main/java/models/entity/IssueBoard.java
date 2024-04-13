@@ -16,8 +16,8 @@ public class IssueBoard {
 	private Date createdAt;
 	private int updatedBy;
 	private Date updatedAt;
-
-
+	private String issueType;
+	private int projectID;
 
 	public IssueBoard() {
 
@@ -85,6 +85,22 @@ public class IssueBoard {
 		this.status = status;
 	}
 
+	public String getIssueType() {
+		return issueType;
+	}
+
+	public void setIssueType(String issueType) {
+		this.issueType = issueType;
+	}
+	
+	public int getProjectID() {
+		return projectID;
+	}
+
+	public void setProjectID(int projectID) {
+		this.projectID = projectID;
+	}
+	
 	public int getComponentID() {
 		return componentID;
 	}

@@ -104,7 +104,7 @@ public class UserAdministration implements Serializable {
             	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
             }else{
             	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User has been added"));
-                FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('userDialog').hide()");
+                //FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('userDialog').hide()");
             }
             
             clearForm();

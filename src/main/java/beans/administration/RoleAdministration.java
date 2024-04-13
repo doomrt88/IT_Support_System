@@ -107,7 +107,7 @@ public class RoleAdministration implements Serializable {
             clearForm();
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role has been added"));
-            FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('roleDialog').hide()");
+            //FacesContext.getCurrentInstance().getPartialViewContext().getEvalScripts().add("PF('roleDialog').hide()");
         } else {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role creation failed. Please try again."));
         }

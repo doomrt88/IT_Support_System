@@ -1,10 +1,12 @@
-package models.entity;
+package models.dto;
 
-import java.sql.Date;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Issue extends BaseEntity {
-	
+@SuppressWarnings("serial")
+public class IssueDTO implements Serializable {
+
+	private int id;
     private String title;
     private String description;
     private int priority;
@@ -13,10 +15,18 @@ public class Issue extends BaseEntity {
     private String status;
     private int componentId;
     private int assignedTo;
-	private String issueType;
-	private int projectId;
-	
-	public String getTitle() {
+    private String issueType;
+    private int projectId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public String getTitle() {
         return title;
     }
 
@@ -40,22 +50,22 @@ public class Issue extends BaseEntity {
         this.priority = priority;
     }
 
-	public String getIssueType() {
-		return issueType;
-	}
+    public String getIssueType() {
+        return issueType;
+    }
 
-	public void setIssueType(String issueType) {
-		this.issueType = issueType;
-	}
-	
-	public int getProjectID() {
-		return projectId;
-	}
+    public void setIssueType(String issueType) {
+        this.issueType = issueType;
+    }
 
-	public void setProjectID(int projectID) {
-		this.projectId = projectID;
-	}
-	
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
     public LocalDateTime getStartDate() {
         return startDate;
     }

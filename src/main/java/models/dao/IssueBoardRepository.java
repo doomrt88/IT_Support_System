@@ -21,22 +21,22 @@ public class IssueBoardRepository extends BaseRepository<IssueBoard> {
 
     @Override
     protected IssueBoard mapResultSetToEntity(ResultSet resultSet) throws SQLException {
-    	IssueBoard issue = new IssueBoard();
-        // add logic here
-    	issue.setIssueID(resultSet.getInt("issue_id"));
+        IssueBoard issue = new IssueBoard();
+        issue.setIssueID(resultSet.getInt("issue_id"));
         issue.setTitle(resultSet.getString("title"));
         issue.setDescription(resultSet.getString("description"));
         issue.setPriority(resultSet.getInt("priority"));
         issue.setStartDate(resultSet.getDate("start_date"));
         issue.setDueDate(resultSet.getDate("due_date"));
         issue.setStatus(resultSet.getString("status"));
-        //issue.setComponentId(resultSet.getInt("component_id"));
+        issue.setProjectID(resultSet.getInt("project_id"));
+        issue.setIssueType(resultSet.getString("issue_type"));
         issue.setAssignedTo(resultSet.getInt("assigned_to"));
         issue.setCreatedBy(resultSet.getInt("created_by"));
         issue.setCreatedAt(resultSet.getDate("created_at"));
         issue.setUpdatedBy(resultSet.getInt("updated_by"));
         issue.setUpdatedAt(resultSet.getDate("updated_at"));
-        
+
         return issue;
     }
 
@@ -47,22 +47,45 @@ public class IssueBoardRepository extends BaseRepository<IssueBoard> {
 
     @Override
     protected String getInsertSql() {
-        return "INSERT INTO issues (title, description, priority, start_date, due_date, status, component_id, assigned_to, created_by, created_at, updated_by, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO issues (title, description, priority, start_date, due_date, status, project_id, issue_type, assigned_to, created_by, created_at, updated_by, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     @Override
     protected String getUpdateSql() {
-        return "UPDATE issues SET title = ?, description = ?, priority = ?, start_date = ?, due_date = ?, status = ?, component_id = ?, assigned_to = ?, updated_by = ?, updated_at = ? WHERE issue_id = ?";
+        return "UPDATE issues SET title = ?, description = ?, priority = ?, start_date = ?, due_date = ?, status = ?, project_id = ?, issue_type = ?, assigned_to = ?, updated_by = ?, updated_at = ? WHERE issue_id = ?";
     }
 
     @Override
     protected void setInsertParameters(PreparedStatement preparedStatement, IssueBoard entity) throws SQLException {
-        // here too
+        preparedStatement.setString(1, entity.getTitle());
+        preparedStatement.setString(2, entity.getDescription());
+        preparedStatement.setInt(3, entity.getPriority());
+        preparedStatement.setDate(4, entity.getStartDate());
+        preparedStatement.setDate(5, entity.getDueDate());
+        preparedStatement.setString(6, entity.getStatus());
+        preparedStatement.setInt(7, entity.getProjectID());
+        preparedStatement.setString(8, entity.getIssueType());
+        preparedStatement.setInt(9, entity.getAssignedTo());
+        preparedStatement.setInt(10, entity.getCreatedBy());
+        preparedStatement.setTimestamp(11, new java.sql.Timestamp(System.currentTimeMillis()));
+        preparedStatement.setInt(12, entity.getUpdatedBy());
+        preparedStatement.setTimestamp(13, new java.sql.Timestamp(System.currentTimeMillis()));
     }
 
     @Override
     protected void setUpdateParameters(PreparedStatement preparedStatement, IssueBoard entity) throws SQLException {
-    	// here too
+        preparedStatement.setString(1, entity.getTitle());
+        preparedStatement.setString(2, entity.getDescription());
+        preparedStatement.setInt(3, entity.getPriority());
+        preparedStatement.setDate(4, entity.getStartDate());
+        preparedStatement.setDate(5, entity.getDueDate());
+        preparedStatement.setString(6, entity.getStatus());
+        preparedStatement.setInt(7, entity.getProjectID());
+        preparedStatement.setString(8, entity.getIssueType());
+        preparedStatement.setInt(9, entity.getAssignedTo());
+        preparedStatement.setInt(10, entity.getUpdatedBy());
+        preparedStatement.setTimestamp(11, new java.sql.Timestamp(System.currentTimeMillis()));
+        preparedStatement.setInt(12, entity.getIssueID());
     }
     
     // moved Issue DAO here

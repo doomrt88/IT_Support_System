@@ -27,6 +27,9 @@
                             <a class="nav-link" data-toggle="pill" href="#allOpenIssues">All Open Issues</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#myOpenIssues">My Open Issues</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" data-toggle="pill" href="#mySubmittedIssues">My Submitted Issues</a>
                         </li>
                         <li class="nav-item">
@@ -38,6 +41,9 @@
                     <div class="tab-content">
                         <div id="myBoard" class="tab-pane fade show active">
                             <ui:include src="/Boards/MyBoard.xhtml" />
+                        </div>
+                        <div id="myOpenIssues" class="tab-pane fade">
+                            <ui:include src="/Boards/myOpenIssues.xhtml" />
                         </div>
                         <div id="allOpenIssues" class="tab-pane fade">
                             <ui:include src="/Boards/allOpenIssues.xhtml" />
